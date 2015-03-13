@@ -32,9 +32,10 @@ Demo & Tests (one of two ways)
  * `docker run -d -p 8080:80 romeoz/rock-app-basic`
  * Open demo [http://localhost:8080/](http://localhost:8080/)
  
-####2. Vagrant + Ansible
+####2. VirtualBox + Vagrant + Ansible
 
  * `composer create-project --prefer-dist romeoz/rock-app-basic:*@dev`
+ * [Install VirtualBox](https://www.virtualbox.org/wiki/Downloads)
  * [Install Vagrant](https://www.vagrantup.com/downloads), and additional Vagrant plugins `vagrant plugin install vagrant-hostsupdater vagrant-vbguest vagrant-cachier`
  * `vagrant up`
  * Open demo [http://rock-basic/](http:/rock-basic/) or [http://192.168.33.40/](http://192.168.33.40/)

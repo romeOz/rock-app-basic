@@ -1,0 +1,10 @@
+---
+- hosts: docker
+  sudo: true
+
+  roles:
+    - initial
+    - common
+    - nginx
+    - php
+    - composer

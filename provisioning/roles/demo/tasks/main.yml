@@ -1,3 +1,3 @@
 - name: Installing dependencies
-  shell: composer install --prefer-dist
+  shell: composer install --prefer-dist chdir={{ root_dir }}
   tags: demo

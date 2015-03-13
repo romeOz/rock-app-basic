@@ -9,7 +9,7 @@ class MainController extends Controller
 {
     public function actionIndex()
     {
-        $this->render('index', ['content' => 'Hello world!']);
+        return $this->render('index', ['content' => 'Hello world!']);
     }
 
     public function notPage($layout = 'index')

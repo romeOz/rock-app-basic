@@ -10,7 +10,6 @@ require(dirname(__DIR__) . '/vendor/autoload.php');
 
 defined('ROCK_DEBUG') or define('ROCK_DEBUG', true);
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-require(dirname(__DIR__) . '/framework/polyfills.php');
 
 Rock::$app = new Rock();
 

@@ -16,5 +16,5 @@ $config['components'] = \rock\helpers\ArrayHelper::merge(
     require(__DIR__ . '/models.php'),
     require(__DIR__ . '/controllers.php')
 );
-return $configs;
+return $config;
 

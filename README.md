@@ -23,6 +23,35 @@ In your composer.json:
 }
 ```
 
+Then, to create the structure of the application you must to run `/path/to/init.sh`.
+if you want to create tables `Users` and `Access`, then run with parameter `/path/to/init.sh -u <username> -p <password>`.
+
+
+Configure server
+-------------------
+
+For a single entry point.
+
+####Apache
+
+Security via "white list":
+
+```
+RewriteCond %{REQUEST_URI} ^\/(?!index\.php|robots\.txt|500\.html|favicon\.ico||assets\b\/.+\.(?:js|ts|css|ico|xml|swf|flv|pdf|xls|htc|gif|jpg|png|jpeg)$).*$ [NC]
+RewriteRule ^.*$ index.php [L]
+```
+
+####Nginx
+
+Security via "white list":
+
+```
+location ~ ^\/(?!index\.php|robots\.txt|favicon\.ico|500\.html|assets\b\/.+\.(?:js|ts|css|ico|xml|swf|flv|pdf|xls|htc|gif|jpg|png|jpeg)$).*$
+{
+    rewrite ^.*$ /index.php;
+}
+```
+
 Demo & Tests (one of two ways)
 -------------------
 
@@ -47,9 +76,20 @@ vagrant ssh
 cd /var/www/rock-basic
 ```
 
+####Out of the box:
+
+ * Ubuntu 14.04 64 bit
+
+> If you need to use 32 bit of Ubuntu, then uncomment `config.vm.box_url` the appropriate version in the file `/path/to/Vagrantfile`.
+
+ * Nginx 1.6
+ * PHP-FPM 5.6
+ * Composer
+
 Requirements
 -------------------
  * **PHP 5.4+**
+ * **MySQL 5.5+**
 
 License
 -------------------

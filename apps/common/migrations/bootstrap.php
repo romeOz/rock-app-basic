@@ -33,7 +33,7 @@ if ($env = array_slice($argv, 1)) {
     $path = dirname(dirname(__DIR__)) . '/common/configs/classes.php';
     $classes = require($path);
     $config['components']['db'] = $classes['db'] = $db;
-    //file_put_contents($path, "<?php\n" .var_export($classes, true) . ';');
+    file_put_contents($path, "<?php\nreturn " .var_export($classes, true) . ';');
 }
 
 

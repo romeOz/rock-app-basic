@@ -39,9 +39,7 @@ return [
 
     'markdown' =>[
         'class' => \rock\markdown\Markdown::className(),
-        'handlerLinkByUsername' => function($username){
-            return \apps\common\models\users\BaseUsers::findUrlByUsername($username);
-        }
+        'handlerLinkByUsername' => [\apps\common\configs\MarkdownProperties::className(), 'handlerLinkByUsername']
     ],
 
 

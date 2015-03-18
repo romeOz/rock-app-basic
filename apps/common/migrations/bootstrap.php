@@ -8,8 +8,6 @@ use rock\Rock;
 
 require(dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php');
 
-
-
 Rock::$app = new Rock();
 Rock::$app->language = 'en';
 

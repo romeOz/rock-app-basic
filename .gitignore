@@ -2,10 +2,16 @@
 ## Project
 ############
 
-vendor
+/vendor
 composer.lock
-*~
+tmp
+runtime
 
+############
+## Sass & Compass
+############
+.sass-cache/
+#config.rb
 
 ############
 ## Windows

@@ -1,9 +1,9 @@
 <?php
 
-use apps\common\migrations\AccessItemsMigration;
-use apps\common\migrations\AccessRolesItemsMigration;
-use apps\common\migrations\AccessAssignmentsMigration;
-use apps\common\migrations\UsersMigration;
+use apps\common\migrations\mysql\AccessAssignmentsMigration;
+use apps\common\migrations\mysql\AccessItemsMigration;
+use apps\common\migrations\mysql\AccessRolesItemsMigration;
+use apps\common\migrations\mysql\UsersMigration;
 use rock\Rock;
 
 require(dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php');

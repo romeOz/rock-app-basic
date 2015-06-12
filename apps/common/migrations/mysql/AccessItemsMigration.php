@@ -1,42 +1,37 @@
 <?php
 
-namespace apps\common\migrations;
+namespace apps\common\migrations\mysql;
 
 
-use rock\rbac\UserRole;
+use apps\common\rbac\UserRole;
 use rock\db\Migration;
-use rock\db\Schema;
 use rock\rbac\Permission;
-use rock\rbac\Role;
 use rock\rbac\RBACInterface;
+use rock\rbac\Role;
 
 class AccessItemsMigration extends Migration
 {
-    public static $table = 'access_items';
+    public $table = 'access_items';
+
     public function up()
     {
-        $table = static::$table;
-        $tableOptions = null;
-        if ($this->connection->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
-        }
         $this->createTable(
-            $table,
+            $this->table,
             [
-                'name' => Schema::TYPE_STRING . '(64) NOT NULL',
-                'type' => Schema::TYPE_BOOLEAN . '(2) unsigned NOT NULL DEFAULT 1',
-                'description' => Schema::TYPE_STRING . '(255) NOT NULL DEFAULT \'\'',
-                'data' => Schema::TYPE_TEXT . ' NOT NULL',
-                'order_index' => Schema::TYPE_INTEGER . ' unsigned NOT NULL DEFAULT 0',
+                'name' => 'VARCHAR(64) NOT NULL PRIMARY KEY',
+                'type' => 'TINYINT(2) NOT NULL DEFAULT 1',
+                'description' => "VARCHAR(255) NOT NULL DEFAULT ''",
+                'data' => "TEXT NOT NULL",
+                'order_index' => 'INT unsigned NOT NULL DEFAULT 0',
             ],
-            $tableOptions,
+            'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB',
             true
         );
-        $this->addPrimaryKey('', $table, 'name');
-        $this->createIndex("idx_{$table}_type", $table, 'type');
+
+        // insert data
 
         $this->batchInsert(
-            $table,
+            $this->table,
             ['name', 'type', 'description', 'data', 'order_index'],
             [
                 ['godmode', RBACInterface::TYPE_ROLE, 'super admin', serialize(new Role), 999],
@@ -51,13 +46,14 @@ class AccessItemsMigration extends Migration
                 ['delete_post', RBACInterface::TYPE_PERMISSION, 'delete post', serialize(new Permission), 0],
             ]
         );
-    }
 
+        // indexes
+
+        $this->createIndex("idx_{$this->table}__type", $this->table, 'type');
+    }
 
     public function down()
     {
-        //$this->db->createCommand("SET FOREIGN_KEY_CHECKS=0")->execute();
-        $this->dropTable(static::$table, true);
-        //$this->db->createCommand("SET FOREIGN_KEY_CHECKS=1")->execute();
+        $this->dropTable($this->table, true);
     }
 } 

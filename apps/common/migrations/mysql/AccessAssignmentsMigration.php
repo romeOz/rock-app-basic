@@ -3,6 +3,8 @@
 namespace apps\common\migrations\mysql;
 
 
+use apps\common\migrations\CommonMigration;
+
 class AccessAssignmentsMigration extends CommonMigration
 {
     public $table = 'access_assignments';

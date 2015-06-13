@@ -2,12 +2,11 @@
 
 namespace apps\common\migrations\mysql;
 
-
-use apps\common\rbac\UserRole;
 use rock\db\Migration;
 use rock\rbac\Permission;
 use rock\rbac\RBACInterface;
 use rock\rbac\Role;
+use rock\rbac\UserRole;
 
 class AccessItemsMigration extends Migration
 {

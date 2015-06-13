@@ -18,7 +18,11 @@
   mysql_user: name={{ mysql.root_user }} password={{ mysql.root_user }} host={{ item }} state=present
   with_items:
     - "%"
-    - "{{ ansible_eth1.ipv4.address }}"
+    - "{% if ansible_eth1.ipv4.address is defined %}
+          {{ ansible_eth1.ipv4.address }}
+       {% else %}
+           127.0.0.1
+       {% endif %}"
     - 127.0.0.1
     - ::1
     - localhost
@@ -37,7 +41,11 @@
   mysql_user: name={{ mysql.user }} password={{ mysql.pass }} priv={{ mysql.privileges|join('/') }} host={{ item }} state=present
   with_items:
     - "%"
-    - "{{ ansible_eth1.ipv4.address }}"
+    - "{% if ansible_eth1.ipv4.address is defined %}
+          {{ ansible_eth1.ipv4.address }}
+       {% else %}
+           127.0.0.1
+       {% endif %}"
     - 127.0.0.1
     - ::1
     - localhost

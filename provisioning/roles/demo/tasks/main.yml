@@ -2,6 +2,10 @@
   shell: composer install --prefer-dist chdir={{ root_dir }}
   tags: demo
 
-- name: chown project
+- name: Chown project
   shell: chown {{ username }}:{{ username }} {{ root_dir }} -Rf
+  tags: demo
+
+- name: Create default tables
+  shell: php {{ root_dir }}/apps/common/migrations/bootstrap.php
   tags: demo

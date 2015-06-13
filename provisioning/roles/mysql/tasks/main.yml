@@ -1,0 +1,53 @@
+---
+- name: ensure MySQL is installed
+  action: apt pkg={{ item }} state=latest
+  with_items:
+      - mysql-client
+      - mysql-server
+      - php5-mysql
+  notify : restart mysql
+
+- name: service Mysql is started
+  service: name=mysql state=started enabled=yes
+
+- name: set our MySQL config my.cnf
+  action: template src='mysqld-ansible.cnf.j2' dest='/etc/mysql/conf.d/mysqld-ansible.cnf'
+  notify: restart mysql
+
+- name: "Create root-user + Assignment permission to the DB"
+  mysql_user:
+    name={{ mysql.root_user }}
+    password={{ mysql.root_user }}
+    host={{ item }}
+    state=present
+  with_items:
+    - "%"
+    - "{{ ansible_eth1.ipv4.address }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  notify: restart mysql
+
+- name: copy .my.cnf file with root password credentials
+  template: src=my.cnf.j2 dest=/root/.my.cnf owner=root mode=0600
+
+- name: Create DB for demo
+  mysql_db: name={{ mysql.db_demo }}
+
+- name: Create DB for test
+  mysql_db: name={{ mysql.db_test }}
+
+- name: "Create user + Assignment permission to the DB"
+  mysql_user:
+    name={{ mysql.user }}
+    password={{ mysql.pass }}
+    priv={{ mysql.privileges|join('/') }}
+    host={{ item }}
+    state=present
+  with_items:
+    - "%"
+    - "{{ ansible_eth1.ipv4.address }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  notify: restart mysql

@@ -27,7 +27,7 @@ class UsersMigration extends CommonMigration
                 'status' => 'TINYINT(2) unsigned NOT NULL DEFAULT 2',
                 'ctime' => 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()',
                 'login_last' => 'TIMESTAMP',
-                'url' => 'TEXT NOT NULL',
+                'url' => "VARCHAR(512) NOT NULL DEFAULT ''",
             ],
             'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB',
             true

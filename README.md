@@ -26,33 +26,6 @@ In your composer.json:
 If you want to create tables `Users` and `RBAC`, then run `/path/to/apps/common/migrations/bootstrap.php`.
 
 
-Configure server
--------------------
-
-For a single entry point.
-
-####Apache
-
-Security via "white list":
-
-```
-RewriteCond %{REQUEST_URI} ^\/(?!index\.php|robots\.txt|500\.html|favicon\.ico||assets\b\/.+\.(?:js|ts|css|ico|xml|swf|flv|pdf|xls|htc|gif|jpg|png|jpeg)$).*$ [NC]
-RewriteRule ^.*$ index.php [L]
-```
-
-####Nginx
-
-Security via "white list":
-
-```
-location ~ ^\/(?!index\.php|robots\.txt|favicon\.ico|500\.html|assets\b\/.+\.(?:js|ts|css|ico|xml|swf|flv|pdf|xls|htc|gif|jpg|png|jpeg)$).*$
-{
-    rewrite ^.*$ /index.php;
-}
-```
-
-or [**optimal version**](https://github.com/romeOz/rock-app-basic/blob/master/provisioning/roles/nginx/templates/site.conf) ([recommended]((https://events.yandex.ru/lib/talks/2392/)) Igor Sysoev)
-
 Demo & Tests (one of two ways)
 -------------------
 
@@ -93,6 +66,33 @@ Requirements
 -------------------
  * **PHP 5.4+**
  * **MySQL 5.5+**
+ 
+Configure server
+-------------------
+
+For a single entry point.
+
+####Apache
+
+Security via "white list":
+
+```
+RewriteCond %{REQUEST_URI} ^\/(?!index\.php|robots\.txt|500\.html|favicon\.ico||assets\b\/.+\.(?:js|ts|css|ico|xml|swf|flv|pdf|xls|htc|gif|jpg|png|jpeg)$).*$ [NC]
+RewriteRule ^.*$ index.php [L]
+```
+
+####Nginx
+
+Security via "white list":
+
+```
+location ~ ^\/(?!index\.php|robots\.txt|favicon\.ico|500\.html|assets\b\/.+\.(?:js|ts|css|ico|xml|swf|flv|pdf|xls|htc|gif|jpg|png|jpeg)$).*$
+{
+    rewrite ^.*$ /index.php;
+}
+```
+
+or [**optimal version**](https://github.com/romeOz/rock-app-basic/blob/master/provisioning/roles/nginx/templates/site.conf) ([recommended](https://events.yandex.ru/lib/talks/2392/) Igor Sysoev) 
 
 License
 -------------------

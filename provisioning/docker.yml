@@ -10,5 +10,6 @@
     - common
     - nginx
     - php
+    - mysql
     - composer
     - demo

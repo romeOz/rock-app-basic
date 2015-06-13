@@ -2,25 +2,14 @@
 
 namespace apps\common\models\forms;
 
-use apps\common\models\users\BaseUsers;
-use rock\base\BaseException;
+use apps\common\models\users\Users;
 use rock\captcha\Captcha;
 use rock\components\Model;
 use rock\components\ModelEvent;
 use rock\csrf\CSRF;
-use rock\date\DateTime;
 use rock\db\Connection;
-use rock\di\Container;
-use rock\helpers\ArrayHelper;
-use rock\helpers\Helper;
-use rock\helpers\StringHelper;
+use rock\helpers\Instance;
 use rock\i18n\i18n;
-use rock\log\Log;
-use rock\mail\Mail;
-use rock\response\Response;
-use rock\session\Session;
-use rock\url\Url;
-use rock\user\User;
 use rock\validate\Validate;
 
 class BaseSignupForm extends Model
@@ -36,78 +25,61 @@ class BaseSignupForm extends Model
     public $captcha;
     public $password;
 
-    public $emailBodyTpl = '@common.views/email/{lang}/activate';
-    public $redirectUrl;
-    public $activateUrl = '/activation.html';
-    public $defaultStatus = BaseUsers::STATUS_NOT_ACTIVE;
-    public $generateToken = true;
 
-    public $isSignup = false;
+    public $defaultStatus = Users::STATUS_NOT_ACTIVE;
+    public $generateToken = true;
 
     /** @var Connection */
     protected $connection;
 
     /** @var  CSRF */
-    protected $_csrfInstance;
-    /** @var  Response */
-    protected $_response;
+    protected $csrfInstance = 'csrf';
     /** @var  Captcha */
-    protected $_captcha;
-    /** @var  Mail */
-    protected $_mail;
-    /** @var  Session */
-    protected $_session;
-    /** @var  User */
-    protected $_user;
+    protected $captchaInstance = 'captcha';
 
     public function init()
     {
         parent::init();
 
-        $this->_csrfInstance = Container::load('csrf');
-        $this->_response = Container::load('response');
-        $this->_captcha = Container::load('captcha');
-        $this->_template = Container::load('template');
-        $this->_mail = Container::load('mail');
-        $this->_session = Container::load('session');
-        $this->_user = Container::load('user');
+        $this->csrfInstance = Instance::ensure($this->csrfInstance);
+        $this->captchaInstance = Instance::ensure($this->captchaInstance);
     }
 
     public function rules()
     {
         return [
             [
-                self::RULE_VALIDATE, '_csrf', 'validateCSRF', 'one'
+                '_csrf', 'validateCSRF', 'one'
             ],
             [
-                self::RULE_SANITIZE, ['email', 'username', 'password', 'password_confirm', 'captcha'], 'trim'
+                ['email', 'username', 'password', 'password_confirm', 'captcha'], 'trim'
             ],
             [
-                self::RULE_VALIDATE, ['email', 'username', 'password', 'password_confirm', 'captcha'], 'required',
+                ['email', 'username', 'password', 'password_confirm', 'captcha'], 'required',
             ],
             [
-                self::RULE_VALIDATE, 'email', 'length' => [4, 80, true], 'email'
+                'email', 'length' => [4, 80, true], 'email'
             ],
             [
-                self::RULE_VALIDATE, 'username', 'length' => [3, 80, true], 'regex' => ['/^[\w\s\-\*\@\%\#\!\?\.\)\(\+\=\~\:]+$/iu']
+                'username', 'length' => [3, 80, true], 'regex' => ['/^[\w\s\-\*\@\%\#\!\?\.\)\(\+\=\~\:]+$/i']
             ],
             [
-                self::RULE_VALIDATE, 'password', 'length' => [6, 20, true], 'regex' => ['/^[a-z\d\-\_\.]+$/i']
+                'password', 'length' => [6, 20, true], 'regex' => ['/^[a-z\d\-\_\.]+$/i']
             ],
             [
-                self::RULE_VALIDATE, 'password_confirm', 'confirm' => [$this->password]
+                'password_confirm', 'confirm' => [$this->password]
             ],
             [
-                self::RULE_VALIDATE, 'captcha', 'captcha' => [$this->_captcha->getSession()]
+                'captcha', 'captcha' => [$this->captchaInstance->getSession()]
             ],
             [
-                self::RULE_SANITIZE, 'email', 'lowercase'
+                'email', '!lowercase'
             ],
             [
-                self::RULE_SANITIZE, ['email', 'username', 'password', 'password_confirm', 'captcha'], 'removeTags'
+                ['email', 'username', 'password', 'password_confirm', 'captcha'], 'removeTags'
             ],
             [
-                self::RULE_VALIDATE, 'username', 'validateExistsUser'
+                'username', 'validateExistsUser'
             ],
         ];
     }
@@ -115,7 +87,7 @@ class BaseSignupForm extends Model
 
     public function safeAttributes()
     {
-        return ['email', 'username', 'password', 'password_confirm', 'captcha', $this->_csrfInstance->csrfParam];
+        return ['email', 'username', 'password', 'password_confirm', 'captcha', $this->csrfInstance->csrfParam];
     }
 
     public function attributeLabels()
@@ -130,7 +102,7 @@ class BaseSignupForm extends Model
     }
 
     /**
-     * @var BaseUsers
+     * @var Users
      */
     protected $users;
 
@@ -140,101 +112,26 @@ class BaseSignupForm extends Model
             return false;
         }
 
-        return $this->afterSignup();
+        $this->afterSignup();
+        return true;
     }
 
-    public function setConnection(Connection $connection)
+    public function validateExistsUser()
     {
-        $this->connection = $connection;
-    }
-
-    /**
-     * @return BaseUsers
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * @param string|null $url
-     */
-    public function redirect($url = null)
-    {
-        if ($this->isSignup === false) {
+        if ($this->hasErrors()) {
             return;
         }
-
-        $this->_session->setFlash('successSignup', ['email' => StringHelper::replaceRandChars($this->email)]);
-
-        $response = $this->_response;
-        if (!isset($url) && isset($this->redirectUrl)) {
-            $url = $this->redirectUrl;
-        }
-        if (!isset($url)) {
-            $response->refresh()->send(true);
-        }
-        $response->redirect($url)->send(true);
-    }
-
-    protected function prepareBody(array $data, $chunk)
-    {
-        $name = $data['username'];
-        if (isset($data['firstname']) || isset($data['lastname'])) {
-            $name = implode(' ', ArrayHelper::intersectByKeys($data, ['firstname', 'lastname']));
-        }
-
-        $data['fullname'] = $name;
-        $data['password'] = $this->password;
-        if ($this->generateToken) {
-            $data['url'] = Url::set($this->activateUrl)
-                ->addArgs(['token' => $data['token']])
-                ->getAbsoluteUrl(true);
-        }
-
-        return $this->_template->getChunk($chunk, $data);
-    }
-
-    /**
-     * @param null $subject
-     * @param null $chunkBody
-     */
-    public function sendMail($subject = null, $chunkBody = null)
-    {
-        if ($this->isSignup === false) {
-            return;
-        }
-
-        if (!isset($subject)) {
-            $subject = i18n::t('subjectRegistration', ['site_name' => i18n::t('siteName')]);
-        }
-
-        $body = $this->prepareBody($this->getUsers()->toArray(['username', 'email','token']), Helper::getValue($chunkBody, $this->emailBodyTpl));
-
-        try {
-            $this->_mail
-                ->address($this->email)
-                ->subject($subject)
-                ->body($body)
-                ->send();
-        } catch (\Exception $e) {
-            $this->addErrorAsPlaceholder(i18n::t('failSendEmail'), 'e_signup');
-            Log::warn(BaseException::convertExceptionToString($e));
+        if (Users::existsByUsernameOrEmail($this->email, $this->username, null)) {
+            $this->addError('e_signup', i18n::t('existsUsernameOrEmail'));
         }
     }
 
-    public function login()
+    public function validateCSRF($input)
     {
-        $users = $this->getUsers();
-        $users->login_last = DateTime::set()->isoDatetime();
-        if (!$users->save()) {
-            $this->addErrorAsPlaceholder(i18n::t('failSignup'), 'e_signup');
-            return;
+        $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
+        if (!$v->validate($input)) {
+            $this->addError('e_signup', $v->getFirstError());
         }
-
-        $data = $users->toArray();
-        $this->_user->addMulti(ArrayHelper::intersectByKeys($data, ['id', 'username', 'url']));
-        $this->_user->login();
     }
 
     public function beforeSignup()
@@ -246,41 +143,28 @@ class BaseSignupForm extends Model
 
     public function afterSignup()
     {
-        if (!$users = BaseUsers::create($this->getAttributes(), $this->defaultStatus, $this->generateToken)) {
-            $this->addErrorAsPlaceholder(i18n::t('failSignup'), 'e_signup');
-            return false;
+        if (!$users = Users::create($this->getAttributes(), $this->defaultStatus, $this->generateToken)) {
+            $this->addError('e_signup', i18n::t('failSignup'));
+            return;
         }
         $this->users = $users;
         $this->users->id = $this->users->primaryKey;
-        $this->isSignup = true;
-        $result = $users->toArray();
 
         $event = new ModelEvent();
-        $event->result = $result;
+        $event->result = $users;
         $this->trigger(self::EVENT_AFTER_SIGNUP, $event);
-
-        return true;
     }
 
-    protected function validateExistsUser()
+    /**
+     * @return Users
+     */
+    public function getUsers()
     {
-        if ($this->hasErrors()) {
-            return true;
-        }
-        if (BaseUsers::existsByUsernameOrEmail($this->email, $this->username, null)) {
-            $this->addErrorAsPlaceholder(i18n::t('existsUsernameOrEmail'), 'e_signup');
-            return false;
-        }
-        return true;
+        return $this->users;
     }
 
-    protected function validateCSRF($input)
+    public function setConnection(Connection $connection)
     {
-        $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
-        if (!$v->validate($input)) {
-            $this->addErrorAsPlaceholder($v->getFirstError(), 'e_signup');
-            return false;
-        }
-        return true;
+        $this->connection = $connection;
     }
-} 
+}

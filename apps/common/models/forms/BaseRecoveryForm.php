@@ -3,21 +3,14 @@
 namespace apps\common\models\forms;
 
 
-use apps\common\models\users\BaseUsers;
-use rock\base\BaseException;
+use apps\common\models\users\Users;
 use rock\captcha\Captcha;
 use rock\components\Model;
 use rock\components\ModelEvent;
 use rock\csrf\CSRF;
-use rock\db\Session;
 use rock\di\Container;
-use rock\helpers\ArrayHelper;
-use rock\helpers\Helper;
-use rock\helpers\StringHelper;
+use rock\helpers\Instance;
 use rock\i18n\i18n;
-use rock\log\Log;
-use rock\mail\Mail;
-use rock\response\Response;
 use rock\security\Security;
 use rock\validate\Validate;
 
@@ -30,73 +23,57 @@ class BaseRecoveryForm extends Model
     /** @var  string */
     public $email;
     /** @var  string */
-    public $password;
-    /** @var  string */
     public $captcha;
     /** @var  string */
     public $_csrf;
 
-    public $emailBodyTpl = '@common.views/email/{lang}/recovery';
-    public $redirectUrl;
-
-    public $isRecovery = false;
-
     /** @var  CSRF */
-    protected $_csrfInstance;
-    /** @var  Response */
-    protected $_response;
+    protected $csrfInstance = 'csrf';
     /** @var  Captcha */
-    protected $_captcha;
-    /** @var  Mail */
-    protected $_mail;
-    /** @var  Session */
-    protected $_session;
+    protected $captchaInstance = 'captcha';
+
 
     public function init()
     {
         parent::init();
 
-        $this->_csrfInstance = Container::load('csrf');
-        $this->_response = Container::load('response');
-        $this->_captcha = Container::load('captcha');
-        $this->_template = Container::load('template');
-        $this->_mail = Container::load('mail');
-        $this->_session = Container::load('session');
+        $this->csrfInstance = Instance::ensure($this->csrfInstance);
+        $this->captchaInstance = Instance::ensure($this->captchaInstance);
     }
-    
+
     public function rules()
     {
         return [
             [
-                self::RULE_VALIDATE, '_csrf', 'validateCSRF', 'one'
+                '_csrf', 'validateCSRF', 'one'
             ],
             [
-                self::RULE_SANITIZE, ['email', 'captcha'], 'trim'
+                ['email', 'captcha'], 'trim'
             ],
             [
-                self::RULE_VALIDATE, ['email', 'captcha'], 'required',
+                ['email', 'captcha'], 'required',
             ],
             [
-                self::RULE_VALIDATE, 'email', 'length' => [4, 80, true], 'email'
+                'email', 'length' => [4, 80, true], 'email'
             ],
             [
-                self::RULE_VALIDATE, 'captcha', 'captcha' => [$this->_captcha->getSession()]
+                'captcha', 'length' => [null, 7, true], 'captcha' => [$this->captchaInstance->getSession()]
             ],
             [
-                self::RULE_SANITIZE, 'email', 'lowercase'
+                'email', '!lowercase'
             ],
             [
-                self::RULE_SANITIZE, ['email', 'captcha'], 'removeTags'
+                ['email', 'captcha'], 'removeTags'
             ],
             [
-                self::RULE_VALIDATE, 'email', 'validateEmail'
+                'email', 'validateEmail'
             ],
         ];
     }
 
     public function safeAttributes()
     {
-        return ['email', 'captcha', $this->_csrfInstance->csrfParam];
+        return ['email', 'captcha', $this->csrfInstance->csrfParam];
     }
 
     public function attributeLabels()
@@ -107,93 +84,53 @@ class BaseRecoveryForm extends Model
         ];
     }
 
-    protected $_users;
-
-    /**
-     * Finds user by `email`
-     *
-     * @return BaseUsers
-     */
-    public function getUsers()
-    {
-        if (!isset($this->_users)) {
-            if (!$this->_users = BaseUsers::findOneByEmail($this->email, BaseUsers::STATUS_ACTIVE, false)) {
-                $this->addErrorAsPlaceholder(i18n::t('invalidEmail'), 'e_recovery');
-            }
-        }
-
-        return $this->_users;
-    }
-
     public function validate(array $attributes = NULL, $clearErrors = true)
     {
         if (!$this->beforeRecovery() || !parent::validate()) {
             return false;
         }
 
-        return $this->afterRecovery();
-    }
-
-    protected function prepareBody($chunk)
-    {
-        $data = $this->getUsers()->toArray();
-        $name = $data['username'];
-
-        if (isset($data['firstname']) || isset($data['lastname'])) {
-            $name = implode(' ', ArrayHelper::intersectByKeys($data, ['firstname', 'lastname']));
-        }
-
-        $data['fullname'] = $name;
-        $data['password'] = $this->password;
-        $data['email'] = $this->email;
-        return $this->_template->getChunk($chunk, $data);
-    }
-
-    public function sendMail($subject = null, $chunkBody = null)
-    {
-        if ($this->isRecovery === false) {
-            return $this;
-        }
-
-        if (!isset($subject)) {
-            $subject = i18n::t('subjectRecovery', ['site_name' => i18n::t('siteName')]);
-        }
-
-        $body = $this->prepareBody(Helper::getValue($chunkBody, $this->emailBodyTpl));
-
-        try {
-            $this->_mail
-                ->address($this->email)
-                ->subject($subject)
-                ->body($body)
-                ->send();
-        } catch (\Exception $e) {
-            $this->addErrorAsPlaceholder(i18n::t('failSendEmail'), 'e_recovery');
-            Log::warn(BaseException::convertExceptionToString($e));
-        }
-
-        return $this;
+        $this->afterRecovery();
+        return true;
     }
 
     /**
-     * @param string|null $url
+     * Validates the email.
+     * This method serves as the inline validation for password.
      */
-    public function redirect($url = null)
+    public function validateEmail()
     {
-        if ($this->isRecovery === false) {
+        if ($this->hasErrors()) {
             return;
         }
-        $this->_session->setFlash('successRecovery', ['email' => StringHelper::replaceRandChars($this->email)]);
+        $this->getUsers();
+    }
 
-        $response = $this->_response;
-        if (!isset($url) && isset($this->redirectUrl)) {
-            $url = $this->redirectUrl;
+    public function validateCSRF($input)
+    {
+        $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
+        if (!$v->validate($input)) {
+            $this->addError('e_recovery', $v->getFirstError());
         }
-        if (!isset($url)) {
-            $response->refresh()->send(true);
+    }
+
+    /** @var  Users */
+    protected $users;
+
+    /**
+     * Finds user by `email`
+     *
+     * @return Users
+     */
+    protected function getUsers()
+    {
+        if (!isset($this->users)) {
+            if (!$this->users = Users::findOneByEmail($this->email, Users::STATUS_ACTIVE, false)) {
+                $this->addError('e_recovery', i18n::t('invalidEmail'));
+            }
         }
 
-        $response->redirect($url)->send(true);
+        return $this->users;
     }
 
     public function beforeRecovery()
@@ -208,44 +145,15 @@ class BaseRecoveryForm extends Model
         $users = $this->getUsers();
         /** @var Security $security */
         $security = Container::load('security');
-        $this->password = $security->generateRandomKey(7);
-        $users->setPassword($this->password);
+        $password = $security->generateRandomString(7);
+        $users->setPassword($password);
         if (!$users->save()) {
-            $this->addErrorAsPlaceholder(i18n::t('failRecovery'), 'e_recovery');
-            return false;
-        }
-        $this->isRecovery = true;
-        $result = $users->toArray();
+            $this->addError('e_recovery', i18n::t('failRecovery'));
+            return;
+        };
         $event = new ModelEvent();
-        $event->result = $result;
+        $users->password = $password;
+        $event->result = $users;
         $this->trigger(self::EVENT_AFTER_RECOVERY, $event);
-        return true;
     }
-
-    protected function validateCSRF($input)
-    {
-        $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
-        if (!$v->validate($input)) {
-            $this->addErrorAsPlaceholder($v->getFirstError(), 'e_recovery');
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Validates the email.
-     * This method serves as the inline validation for password.
-     */
-    protected function validateEmail()
-    {
-        if ($this->hasErrors()) {
-            return true;
-        }
-        if (!$this->getUsers()) {
-            return false;
-        }
-
-        return true;
-    }
-} 
+}

@@ -11,20 +11,19 @@ Installation
 
 From the Command Line:
 
-`composer require romeoz/rock-app-basic:*@dev`
+`composer require romeoz/rock-app-basic:*`
 
 In your composer.json:
 
 ```json
 {
     "require": {
-        "romeoz/rock-app-basic": "*@dev"
+        "romeoz/rock-app-basic": "*"
     }
 }
 ```
 
-Then, to create the structure of the application you must to run `/path/to/init.sh`.
-if you want to create tables `Users` and `Access`, then run with parameter `/path/to/init.sh -u <username> -p <password>`.
+If you want to create tables `Users` and `RBAC`, then run `/path/to/apps/common/migrations/bootstrap.php`.
 
 
 Configure server
@@ -52,6 +51,8 @@ location ~ ^\/(?!index\.php|robots\.txt|favicon\.ico|500\.html|assets\b\/.+\.(?:
 }
 ```
 
+or [**optimal version**](https://github.com/romeOz/rock-app-basic/blob/master/provisioning/roles/nginx/templates/site.conf) ([recommended]((https://events.yandex.ru/lib/talks/2392/)) Igor Sysoev)
+
 Demo & Tests (one of two ways)
 -------------------
 
@@ -63,11 +64,12 @@ Demo & Tests (one of two ways)
  
 ####2. VirtualBox + Vagrant + Ansible
 
- * `composer create-project --prefer-dist romeoz/rock-app-basic:*@dev`
+ * `composer create-project --prefer-dist romeoz/rock-app-basic:*`
  * [Install VirtualBox](https://www.virtualbox.org/wiki/Downloads)
  * [Install Vagrant](https://www.vagrantup.com/downloads), and additional Vagrant plugins `vagrant plugin install vagrant-hostsupdater vagrant-vbguest vagrant-cachier`
+ * [Install Ansible](http://docs.ansible.com/intro_installation.html#latest-releases-via-apt-ubuntu)
  * `vagrant up`
- * Open demo [http://rock-basic/](http:/rock-basic/) or [http://192.168.33.40/](http://192.168.33.40/)
+ * Open demo [http://rock-basic/](http:/rock-basic/) or [http://192.168.55.55/](http://192.168.55.55/)
 
 > Work/editing the project can be done via ssh:
 
@@ -84,6 +86,7 @@ cd /var/www/rock-basic
 
  * Nginx 1.6
  * PHP-FPM 5.6
+ * MySQL 5.6
  * Composer
 
 Requirements

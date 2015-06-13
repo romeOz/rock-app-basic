@@ -14,7 +14,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 Rock::$app = new Rock();
 
 // catch error
-\rock\exception\ErrorHandler::run();
+\rock\exception\ErrorHandler::register();
 
 $config = require(dirname(__DIR__) .'/apps/frontend/configs/configs.php');
 

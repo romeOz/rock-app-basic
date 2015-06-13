@@ -32,7 +32,7 @@ Demo & Tests (one of two ways)
 ####1. Docker + Ansible
 
  * [Install Docker](https://docs.docker.com/installation/) or [askubuntu](http://askubuntu.com/a/473720)
- * `docker run -d -p 8080:80 romeoz/rock-app-basic:dev`
+ * `docker run -d -p 8080:80 romeoz/rock-app-basic`
  * Open demo [http://localhost:8080/](http://localhost:8080/)
  
 ####2. VirtualBox + Vagrant + Ansible

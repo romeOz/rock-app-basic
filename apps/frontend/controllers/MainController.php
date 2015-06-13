@@ -12,7 +12,7 @@ class MainController extends Controller
         return $this->render('index', ['content' => 'Hello world!']);
     }
 
-    public function notPage($layout = 'index')
+    public function notPage($layout = 'index', array $placeholders = [])
     {
         return parent::notPage($layout);
     }

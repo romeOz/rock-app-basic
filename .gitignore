@@ -2,10 +2,10 @@
 ## Project
 ############
 
-/vendor
+/vendor/
 composer.lock
-tmp
-runtime
+tmp/
+runtime/
 
 ############
 ## Sass & Compass
@@ -23,14 +23,12 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
-
 ############
 ## Vagrant
 ############
-.vagrant/*
-
+.vagrant/
 
 ############
 ## PHPStorm
 ############
-.idea/*
+.idea/

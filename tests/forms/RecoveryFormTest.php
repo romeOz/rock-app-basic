@@ -5,7 +5,6 @@ namespace rockunit\forms;
 use rock\csrf\CSRF;
 use rock\di\Container;
 use rock\Rock;
-use rock\template\Template;
 use rockunit\common\CommonTestTrait;
 use rockunit\db\DatabaseTestCase;
 use rockunit\db\models\Users;
@@ -50,7 +49,6 @@ class RecoveryFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isRecovery);
         $this->assertEquals($errors, $model->getErrors());
     }
 
@@ -126,21 +124,14 @@ class RecoveryFormTest extends DatabaseTestCase
             'captcha' => '12345'
         ];
         static::getSession()->setFlash('captcha', '12345');
-        $template = new Template();
         $model = new RecoveryFormMock();
-        $model->setTemplate($template);
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isRecovery);
         $expected = [
-            'e_recovery' =>
-                [
-                    0 => 'Email is invalid.',
-                ],
+            'e_recovery' => ['Email is invalid.']
         ];
         $this->assertSame($expected, $model->getErrors());
-        $this->assertSame($expected, $template->getAllPlaceholders('$root'));
     }
 
 
@@ -161,7 +152,6 @@ class RecoveryFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isRecovery);
         $this->assertEquals(
             [
                 'captcha' =>
@@ -190,8 +180,6 @@ class RecoveryFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertTrue($model->validate());
-        $this->assertTrue($model->isRecovery);
-        $this->assertTrue($model->getUsers()->validatePassword($model->password));
         $this->assertTrue((bool)Users::deleteByUsername('Chuck'));
     }
 
@@ -213,7 +201,6 @@ class RecoveryFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertTrue($model->validate());
-        $this->assertTrue($model->isSignup);
         $this->assertNotEmpty(Users::activate($model->getUsers()->token));
         $this->assertTrue(Users::existsByUsername('Chuck'));
     }

@@ -35,6 +35,8 @@ class SignupFormTest extends DatabaseTestCase
 
     /**
      * @dataProvider providerFail
+     * @param array $post
+     * @param array $errors
      */
     public function testFail(array $post, array $errors)
     {
@@ -43,7 +45,6 @@ class SignupFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isSignup);
         $this->assertEquals($errors, $model->getErrors());
     }
 
@@ -163,7 +164,6 @@ class SignupFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isSignup);
         $expected = ['e_signup' =>['User with this name/e-mail already exists.',],];
         $this->assertEquals($expected, $model->getErrors());
     }
@@ -185,12 +185,10 @@ class SignupFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isSignup);
 
         $expected = ['e_signup' =>['User with this name/e-mail already exists.',],];
         $this->assertEquals($expected, $model->getErrors());
     }
-
 
     public function testCaptchaFail()
     {
@@ -209,7 +207,6 @@ class SignupFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isSignup);
 
         $expected = ['captcha' =>['captcha must be valid',],];
         $this->assertEquals($expected, $model->getErrors());
@@ -233,7 +230,6 @@ class SignupFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertTrue($model->validate());
-        $this->assertTrue($model->isSignup);
         $this->assertTrue(Users::find()->byUsername('Chuck')->exists());
         $this->assertTrue((bool)Users::deleteByUsername('Chuck'));
     }

@@ -16,12 +16,12 @@ class RecoveryFormMock extends BaseRecoveryForm
      */
     public function getUsers()
     {
-        if (!isset($this->_users)) {
-            if (!$this->_users = Users::findOneByEmail($this->email, Users::STATUS_ACTIVE, false)) {
-                $this->addErrorAsPlaceholder(i18n::t('invalidEmail'), 'e_recovery');
+        if (!isset($this->users)) {
+            if (!$this->users = Users::findOneByEmail($this->email, Users::STATUS_ACTIVE, false)) {
+                $this->addError('e_recovery', i18n::t('invalidEmail'));
             }
         }
 
-        return $this->_users;
+        return $this->users;
     }
 } 

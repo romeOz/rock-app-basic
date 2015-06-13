@@ -34,6 +34,9 @@ class LoginFormTest extends DatabaseTestCase
 
     /**
      * @dataProvider providerFail
+     * @param array $post
+     * @param array $errors
+     * @throws \rock\di\ContainerException
      */
     public function testFail(array $post, array $errors)
     {
@@ -44,7 +47,6 @@ class LoginFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $this->assertFalse($model->isLogged);
         $this->assertEquals($errors, $model->getErrors());
     }
 
@@ -131,10 +133,6 @@ class LoginFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertTrue($model->validate());
-        $this->assertTrue($model->isLogged);
-        $this->assertEquals(
-            Rock::$app->user->getAll(['id', 'username']),
-            $model->getUsers()->toArray(['id', 'username']));
     }
 }
  

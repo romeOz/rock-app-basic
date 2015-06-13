@@ -10,33 +10,27 @@ use rockunit\db\models\Users;
 
 class SignupFormMock extends BaseSignupForm
 {
-
-    protected function validateExistsUser()
+    public function validateExistsUser()
     {
         if ($this->hasErrors()) {
-            return true;
+            return;
         }
         if (Users::existsByUsernameOrEmail($this->email, $this->username, null)) {
-            $this->addErrorAsPlaceholder(i18n::t('existsUsernameOrEmail'), 'e_signup');
-            return false;
+            $this->addError('e_signup', i18n::t('existsUsernameOrEmail'));
         }
-        return true;
     }
 
     public function afterSignup()
     {
-        if (!$users = Users::create($this->getAttributes())) {
-            $this->addErrorAsPlaceholder(i18n::t('failSignup'), 'e_signup');
-            return false;
+        if (!$users = Users::create($this->getAttributes(), $this->defaultStatus, $this->generateToken)) {
+            $this->addError('e_signup', i18n::t('failSignup'));
+            return;
         }
         $this->users = $users;
-        $this->isSignup = true;
-        $result = $users->toArray();
+        $this->users->id = $this->users->primaryKey;
 
         $event = new ModelEvent();
-        $event->result = $result;
+        $event->result = $users;
         $this->trigger(self::EVENT_AFTER_SIGNUP, $event);
-
-        return true;
     }
 } 

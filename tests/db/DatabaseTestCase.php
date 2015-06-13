@@ -25,10 +25,16 @@ class DatabaseTestCase extends \PHPUnit_Framework_TestCase
         $databases = static::getParam('databases');
         $this->database = $databases[$this->driverName];
         $pdo_database = 'pdo_'.$this->driverName;
+        if ($this->driverName === 'oci') {
+            $pdo_database = 'oci8';
+        }
 
         if (!extension_loaded('pdo') || !extension_loaded($pdo_database)) {
             $this->markTestSkipped('pdo and '.$pdo_database.' extension are required.');
         }
+        //$this->mockApplication();
+
+        //throw new \Exception('PDO not exists.');
     }
 
     protected function tearDown()
@@ -36,6 +42,7 @@ class DatabaseTestCase extends \PHPUnit_Framework_TestCase
         if ($this->connection instanceof Connection) {
             $this->connection->close();
         }
+        //$this->destroyApplication();
     }
 
     /**
@@ -63,7 +70,6 @@ class DatabaseTestCase extends \PHPUnit_Framework_TestCase
         if (!$reset && $this->connection instanceof Connection) {
             return $this->connection;
         }
-
         $config = $this->database;
         $fixture = isset($config['fixture']) ? $config['fixture'] : null;
         $migrations = isset($config['migrations']) ? $config['migrations'] : [];
@@ -98,7 +104,13 @@ class DatabaseTestCase extends \PHPUnit_Framework_TestCase
 
         $connection->open();
         if ($fixture !== null) {
-            $lines = explode(';', file_get_contents($fixture));
+            if ($this->driverName === 'oci') {
+                list($drops, $creates) = explode('/* STATEMENTS */', file_get_contents($fixture), 2);
+                list($statements, $triggers, $data) = explode('/* TRIGGERS */', $creates, 3);
+                $lines = array_merge(explode('--', $drops), explode(';', $statements), explode('/', $triggers), explode(';', $data));
+            } else {
+                $lines = explode(';', file_get_contents($fixture));
+            }
             foreach ($lines as $line) {
                 if (trim($line) !== '') {
                     $connection->pdo->exec($line);
@@ -106,17 +118,19 @@ class DatabaseTestCase extends \PHPUnit_Framework_TestCase
             }
         }
 
-        /** @var Migration $migration */
-        foreach ($migrations as $migration) {
-            if (is_string($migration)) {
-                $migration = new $migration;
-            }
-            $migration->connection = $connection;
-            $migration->enableVerbose = false;
-            $migration->up();
-        }
+        $this->applyMigrations($connection, $migrations);
 
         return $connection;
+    }
+
+    protected function applyMigrations(Connection $connection, array $migrations)
+    {
+        foreach ($migrations as $config) {
+            $config = array_merge($config, ['connection' => $connection, 'enableVerbose' => false]);
+            /** @var Migration $migration */
+            $migration = Instance::ensure($config);
+            $migration->up();
+        }
     }
 
     /**

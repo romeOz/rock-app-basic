@@ -15,12 +15,12 @@ class LoginFormMock extends BaseLoginForm
      */
     public function getUsers()
     {
-        if (!isset($this->_users)) {
-            if (!$this->_users = Users::findOneByEmail($this->email, null, false)) {
-                $this->addErrorAsPlaceholder(i18n::t('notExistsUser'), 'e_login');
+        if (!isset($this->users)) {
+            if (!$this->users = Users::findOneByEmail($this->email, null, false)) {
+                $this->addError('e_login', i18n::t('notExistsUser'));
             }
         }
 
-        return $this->_users;
+        return $this->users;
     }
 }

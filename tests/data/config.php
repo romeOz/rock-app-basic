@@ -1,6 +1,6 @@
 <?php
 
-use apps\common\migrations\UsersMigration;
+use apps\common\migrations\mysql\UsersMigration;
 use rock\log\Log;
 use rockunit\mocks\SessionMock;
 
@@ -12,7 +12,7 @@ return [
             'password' => '',
             'fixture' => __DIR__ . '/mysql.sql',
             'migrations' => [
-                UsersMigration::className()
+                ['class' => UsersMigration::className()]
             ]
         ],
     ],

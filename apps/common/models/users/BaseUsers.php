@@ -45,7 +45,7 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Finds url by `username`
+     * Finds url by `username`.
      * @param string    $username `username` of user
      * @param int|null  $status `status` of user
      * @return bool|string
@@ -54,13 +54,13 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->select(['url'])->byUsername($username);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->asArray()->scalar();
     }
 
     /**
-     * Finds user by `id`
+     * Finds user by `id`.
      * @param int  $id      `id` of user
      * @param int|null  $status `status` of user
      * @param bool $asArray result as `Array`
@@ -70,13 +70,13 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byId($id);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->asArray($asArray)->one();
     }
 
     /**
-     * Finds user by `username`
+     * Finds user by `username`.
      *
      * @param  string $username `username` of user
      * @param int|null  $status `status` of user
@@ -87,13 +87,13 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byUsername($username);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->asArray($asArray)->one();
     }
 
     /**
-     * Finds user by `email`
+     * Finds user by `email`.
      *
      * @param  string $email   `email` of user
      * @param int|null  $status `status` of user
@@ -104,13 +104,13 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byEmail($email);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->asArray($asArray)->one();
     }
 
     /**
-     * Finds user by `token`
+     * Finds user by `token`.
      *
      * @param  string      $token `token` of user
      * @param int|null  $status `status` of user
@@ -121,7 +121,7 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byToken($token);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->asArray($asArray)->one();
     }
@@ -137,7 +137,7 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byId($id);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->exists();
     }
@@ -153,7 +153,7 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byUsername($username);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->exists();
     }
@@ -169,7 +169,7 @@ class BaseUsers extends ActiveRecord
     {
         $query = static::find()->byEmail($email);
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->exists();
     }
@@ -184,24 +184,24 @@ class BaseUsers extends ActiveRecord
      */
     public static function existsByUsernameOrEmail($email, $username, $status = self::STATUS_ACTIVE)
     {
+        $table = static::tableName();
         $query = static::find()
             ->orWhere(
-                static::tableName() . '.email_hash=UNHEX(MD5(CONCAT(:email, \'' . static::tableName() . '\')))',
+                "{{{$table}}}.[[email_hash]]=UNHEX(MD5(CONCAT(:email, '{$table}')))",
                 [':email' => $email]
             )
             ->orWhere(
-                static::tableName() . '.username_hash=UNHEX(MD5(CONCAT(:username, \'' . static::tableName() . '\')))',
+                "{{{$table}}}.[[username_hash]]=UNHEX(MD5(CONCAT(:username, '{$table}')))",
                 [':username' => $username]
             );
-
         if (isset($status)) {
-            $query->byStatus($status);
+            $query->status($status);
         }
         return $query->exists();
     }
 
     /**
-     * Creates a new user
+     * Creates a new user.
      *
      * @param  array $attributes the attributes given by field => value
      * @param int    $defaultStatus
@@ -210,6 +210,7 @@ class BaseUsers extends ActiveRecord
      */
     public static function create($attributes, $defaultStatus = self::STATUS_NOT_ACTIVE, $generateToken = true)
     {
+        /** @var Users $user */
         $user = new static();
         $user->setScenario(self::S_REGISTRATION);
         $user->setAttributes($attributes);
@@ -222,8 +223,18 @@ class BaseUsers extends ActiveRecord
         if ($user->save()) {
             return $user;
         }
-
         return null;
+    }
+
+    /**
+     * Deletes user by `username`.
+     * @param string $username `username` of user
+     * @return int
+     */
+    public static function deleteByUsername($username)
+    {
+        $users = static::find();
+        return static::deleteAll($users->byUsername($username)->where, $users->params);
     }
 
     /**
@@ -245,21 +256,10 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Deletes user by `username`
-     * @param string $username `username` of user
-     * @return int
-     */
-    public static function deleteByUsername($username)
-    {
-        $users = static::find();
-        return static::deleteAll($users->byUsername($username)->where, $users->params);
-    }
-
-    /**
-     * Validates password
+     * Validates password.
      *
-     * @param  string  $password password to validate
-     * @return boolean if password provided is valid for current user
+     * @param  string  $password password to validate.
+     * @return boolean if password provided is valid for current user.
      */
     public function validatePassword($password)
     {
@@ -267,9 +267,9 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Set status
+     * Set status.
      *
-     * @param int $status - `status` of user
+     * @param int $status `status` of user
      */
     public function setStatus($status)
     {
@@ -277,7 +277,7 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Generates password hash from password and sets it to the model
+     * Generates password hash from password and sets it to the model.
      *
      * @param string $password
      */
@@ -287,7 +287,7 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Set hash for attributes
+     * Set hash for attributes.
      *
      * @param array $attributes
      */
@@ -299,7 +299,7 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Generates new password reset token
+     * Generates new password reset token.
      */
     public function generateToken()
     {
@@ -307,7 +307,7 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Removes password reset token
+     * Removes password reset token.
      */
     public function removeToken()
     {

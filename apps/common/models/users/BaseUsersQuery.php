@@ -3,7 +3,6 @@
 namespace apps\common\models\users;
 
 use rock\db\ActiveQuery;
-use rock\db\Expression;
 
 class BaseUsersQuery extends ActiveQuery
 {
@@ -24,45 +23,35 @@ class BaseUsersQuery extends ActiveQuery
         );
     }
 
-
     public function fieldsSmall()
     {
-        return $this->select(
-            [
-                'id', 'username'
-            ]
-        );
+        return $this->select(['id', 'username']);
     }
 
 
     // WHERE by
 
-    public function byUsername($username)
-    {
-        return $this->andWhere(
-            static::tableName() . '.username_hash=UNHEX(MD5(CONCAT(:username, \'' . static::tableName() . '\')))',
-            [':username' => $username]
-        );
-    }
-
-
     public function byId($id)
     {
-        return $this->andWhere([static::tableName() . '.id' => $id]);
+        return $this->andWhere(['{{' . static::tableName() . '}}.[[id]]' => $id]);
     }
 
-
-    public function byIds(array $ids, $enableOrderByField = false)
+    public function byIds(array $ids)
     {
         $query = $this
-            ->isEnabled()
-            ->andWhere([static::tableName() . '.id' => $ids]);
-        if ($enableOrderByField === true) {
-            $query->addOrderBy([new Expression(' FIELD (' . static::tableName() . '.id, ' . implode(', ', $ids) . ')')]);
-        }
+            ->status()
+            ->andWhere(['{{' . static::tableName() . '}}.[[id]]' => $ids]);
         return $query;
     }
 
+    public function byUsername($username)
+    {
+        $table = static::tableName();
+        return $this->andWhere(
+            "{{{$table}}}.[[username_hash]]=UNHEX(MD5(CONCAT(:username, '{$table}')))",
+            [':username' => $username]
+        );
+    }
 
     /**
      * @param string $email
@@ -70,21 +59,10 @@ class BaseUsersQuery extends ActiveQuery
      */
     public function byEmail($email)
     {
+        $table = static::tableName();
         return $this->andWhere(
-            static::tableName() . '.email_hash=UNHEX(MD5(CONCAT(:email, \'' . static::tableName() . '\')))',
+            "{{{$table}}}.email_hash=UNHEX(MD5(CONCAT(:email, '{$table}')))",
             [':email' => $email]
-        );
-    }
-
-    /**
-     * @param string $password
-     * @return static
-     */
-    public function byPassword($password)
-    {
-        return $this->andWhere(
-            static::tableName() . '.email_hash=UNHEX(MD5(CONCAT(:email, \'' . static::tableName() . '\')))',
-            [':email' => $password]
         );
     }
 
@@ -94,37 +72,15 @@ class BaseUsersQuery extends ActiveQuery
      */
     public function byToken($token)
     {
-        return $this->andWhere([static::tableName() . '.token' => $token]);
+        return $this->andWhere(['{{' . static::tableName() . '}}.[[token]]' => $token]);
     }
 
     /**
      * @param int $status
      * @return static
      */
-    public function byStatus($status)
+    public function status($status = Users::STATUS_ACTIVE)
     {
-        return $this->andWhere([static::tableName() . '.status' => $status]);
+        return $this->andWhere(['{{' . static::tableName() . '}}.[[status]]' => $status]);
     }
-
-
-    // WHERE is
-
-    /**
-     * @return static
-     */
-    public function isEnabled()
-    {
-        return $this->byStatus(BaseUsers::STATUS_ACTIVE);
-    }
-
-    /**
-     * @return static
-     */
-    public function isDisabled()
-    {
-        return $this->andWhere(
-            '[['.static::tableName() . ']].[[status]] < :status',
-            [':status' => BaseUsers::STATUS_ACTIVE]
-        );
-    }
-} 
+}

@@ -1,5 +1,15 @@
 <?php
 return [
+    'db' =>[
+        'class' => 'rock\\db\\Connection',
+        'username' => 'rock',
+        'password' => 'rock',
+        'charset' => 'utf8',
+        'dsn' => 'mysql:host=localhost;dbname=rockdemo;charset=utf8',
+        'tablePrefix' => 'spt_',
+        'aliasSeparator' => '__',
+        'enableSchemaCache' => true,
+    ],
     'route' => [
         'class' => \rock\route\Route::className(),
         'rules' =>

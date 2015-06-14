@@ -57,7 +57,7 @@ cd /var/www/rock-basic
 
 > If you need to use 32 bit of Ubuntu, then uncomment `config.vm.box_url` the appropriate version in the file `/path/to/Vagrantfile`.
 
- * Nginx 1.6
+ * Nginx 1.8
  * PHP-FPM 5.6
  * MySQL 5.6
  * Composer

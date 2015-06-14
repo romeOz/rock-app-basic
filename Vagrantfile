@@ -46,8 +46,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      ansible.playbook = "provisioning/vagrant.yml"
      ansible.inventory_path = "provisioning/inventory"
      ansible.sudo = true
-     ansible.extra_vars = {
-       ip_network: "192.168.55.55"
-     }
    end
 end

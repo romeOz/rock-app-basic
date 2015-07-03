@@ -187,11 +187,11 @@ class BaseUsers extends ActiveRecord
         $table = static::tableName();
         $query = static::find()
             ->orWhere(
-                "{{{$table}}}.[[email_hash]]=UNHEX(MD5(CONCAT(:email, '{$table}')))",
+                "{{{$table}}}.[[email_hash]]=UNHEX(MD5(:email))",
                 [':email' => $email]
             )
             ->orWhere(
-                "{{{$table}}}.[[username_hash]]=UNHEX(MD5(CONCAT(:username, '{$table}')))",
+                "{{{$table}}}.[[username_hash]]=UNHEX(MD5(:username))",
                 [':username' => $username]
             );
         if (isset($status)) {
@@ -294,7 +294,7 @@ class BaseUsers extends ActiveRecord
     public function setHash(array $attributes)
     {
         foreach ($attributes as $attribute) {
-            $this->{$attribute .'_hash'} = NumericHelper::hexToBin(md5($this->$attribute . static::tableName()));
+            $this->{$attribute .'_hash'} = NumericHelper::hexToBin(md5($this->$attribute));
         }
     }
 

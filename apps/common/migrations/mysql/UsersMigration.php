@@ -13,7 +13,6 @@ class UsersMigration extends CommonMigration
 
     public function up()
     {
-
         $this->createTable(
             $this->table,
             [
@@ -56,7 +55,7 @@ class UsersMigration extends CommonMigration
 
     protected function hash($value)
     {
-        return NumericHelper::hexToBin(md5($value. $this->table));
+        return NumericHelper::hexToBin(md5($value));
     }
 
     protected function prepareUrl($username)
@@ -65,7 +64,7 @@ class UsersMigration extends CommonMigration
     }
 
     /**
-     * Translit username
+     * Translit username.
      *
      * @param string $username
      * @return string

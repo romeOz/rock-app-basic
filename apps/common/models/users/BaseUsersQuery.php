@@ -15,12 +15,10 @@ class BaseUsersQuery extends ActiveQuery
 
     public function fields()
     {
-        return $this->select(
-            [
-                'id', 'username', 'token', 'status',
-                'email', 'login_last'
-            ]
-        );
+        return $this->select([
+            'id', 'username', 'token', 'status',
+            'email', 'login_last'
+        ]);
     }
 
     public function fieldsSmall()
@@ -48,7 +46,7 @@ class BaseUsersQuery extends ActiveQuery
     {
         $table = static::tableName();
         return $this->andWhere(
-            "{{{$table}}}.[[username_hash]]=UNHEX(MD5(CONCAT(:username, '{$table}')))",
+            "{{{$table}}}.[[username_hash]]=UNHEX(MD5(:username))",
             [':username' => $username]
         );
     }
@@ -61,7 +59,7 @@ class BaseUsersQuery extends ActiveQuery
     {
         $table = static::tableName();
         return $this->andWhere(
-            "{{{$table}}}.[[email_hash]]=UNHEX(MD5(CONCAT(:email, '{$table}')))",
+            "{{{$table}}}.[[email_hash]]=UNHEX(MD5(:email))",
             [':email' => $email]
         );
     }

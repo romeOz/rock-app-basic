@@ -20,9 +20,9 @@
       "romeoz/rock" : "*@dev"
     },
     "require-dev": {
-      "phpunit/phpunit": "4.6.*",
+      "phpunit/phpunit": "~4.7.0",
       "romeoz/rock-image" : "*@dev",
-      "romeoz/rock-markdown": "@dev"
+      "romeoz/rock-markdown": "*@dev"
     },
     "autoload": {
         "psr-4": {

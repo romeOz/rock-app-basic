@@ -61,7 +61,7 @@ class BaseUsersQuery extends ActiveQuery
     {
         $table = static::tableName();
         return $this->andWhere(
-            "{{{$table}}}.email_hash=UNHEX(MD5(CONCAT(:email, '{$table}')))",
+            "{{{$table}}}.[[email_hash]]=UNHEX(MD5(CONCAT(:email, '{$table}')))",
             [':email' => $email]
         );
     }

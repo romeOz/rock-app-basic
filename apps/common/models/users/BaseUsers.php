@@ -46,8 +46,8 @@ class BaseUsers extends ActiveRecord
 
     /**
      * Finds url by `username`.
-     * @param string    $username `username` of user
-     * @param int|null  $status `status` of user
+     * @param string    $username `username` of user.
+     * @param int|null  $status `status` of user.
      * @return bool|string
      */
     public static function findUrlByUsername($username, $status = self::STATUS_ACTIVE)
@@ -61,9 +61,9 @@ class BaseUsers extends ActiveRecord
 
     /**
      * Finds user by `id`.
-     * @param int  $id      `id` of user
-     * @param int|null  $status `status` of user
-     * @param bool $asArray result as `Array`
+     * @param int  $id      `id` of user.
+     * @param int|null  $status `status` of user.
+     * @param bool $asArray result as `Array`.
      * @return static|array
      */
     public static function findOneById($id, $status = self::STATUS_ACTIVE, $asArray = true)
@@ -78,9 +78,9 @@ class BaseUsers extends ActiveRecord
     /**
      * Finds user by `username`.
      *
-     * @param  string $username `username` of user
-     * @param int|null  $status `status` of user
-     * @param bool    $asArray  result as `Array`
+     * @param  string $username `username` of user.
+     * @param int|null  $status `status` of user.
+     * @param bool    $asArray  result as `Array`.
      * @return static|array
      */
     public static function findOneByUsername($username, $status = self::STATUS_ACTIVE, $asArray = true)
@@ -95,9 +95,9 @@ class BaseUsers extends ActiveRecord
     /**
      * Finds user by `email`.
      *
-     * @param  string $email   `email` of user
-     * @param int|null  $status `status` of user
-     * @param bool    $asArray result as `Array`
+     * @param  string $email   `email` of user.
+     * @param int|null  $status `status` of user.
+     * @param bool    $asArray result as `Array`.
      * @return static|array
      */
     public static function findOneByEmail($email, $status = self::STATUS_ACTIVE, $asArray = true)
@@ -127,10 +127,10 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Exists user by `id`
+     * Exists user by `id`.
      *
-     * @param  int $id `id` of user
-     * @param int|null  $status `status` of user
+     * @param  int $id `id` of user.
+     * @param int|null  $status `status` of user.
      * @return bool
      */
     public static function existsById($id, $status = self::STATUS_ACTIVE)
@@ -143,10 +143,10 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Exists user by `username`
+     * Exists user by `username`.
      *
-     * @param  string $username `username` of user
-     * @param int|null  $status `status` of user
+     * @param  string $username `username` of user.
+     * @param int|null  $status `status` of user.
      * @return bool
      */
     public static function existsByUsername($username, $status = self::STATUS_ACTIVE)
@@ -159,10 +159,10 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Exists user by `email`
+     * Exists user by `email`.
      *
-     * @param  string $email `email` of user
-     * @param int|null  $status `status` of user
+     * @param  string $email `email` of user.
+     * @param int|null  $status `status` of user.
      * @return bool
      */
     public static function existsByEmail($email, $status = self::STATUS_ACTIVE)
@@ -175,11 +175,11 @@ class BaseUsers extends ActiveRecord
     }
 
     /**
-     * Exists user by `email` or `username`
+     * Exists user by `email` or `username`.
      *
-     * @param     $email    `email` of user
-     * @param     $username `username` of user
-     * @param int|null  $status `status` of user
+     * @param     $email    `email` of user.
+     * @param     $username `username` of user.
+     * @param int|null  $status `status` of user.
      * @return bool
      */
     public static function existsByUsernameOrEmail($email, $username, $status = self::STATUS_ACTIVE)
@@ -203,10 +203,10 @@ class BaseUsers extends ActiveRecord
     /**
      * Creates a new user.
      *
-     * @param  array $attributes the attributes given by field => value
+     * @param  array $attributes the attributes given by field => value.
      * @param int    $defaultStatus
      * @param bool   $generateToken
-     * @return static the newly created model, or null on failure
+     * @return static the newly created model, or null on failure.
      */
     public static function create($attributes, $defaultStatus = self::STATUS_NOT_ACTIVE, $generateToken = true)
     {
@@ -228,7 +228,7 @@ class BaseUsers extends ActiveRecord
 
     /**
      * Deletes user by `username`.
-     * @param string $username `username` of user
+     * @param string $username `username` of user.
      * @return int
      */
     public static function deleteByUsername($username)
@@ -269,7 +269,7 @@ class BaseUsers extends ActiveRecord
     /**
      * Set status.
      *
-     * @param int $status `status` of user
+     * @param int $status `status` of user.
      */
     public function setStatus($status)
     {

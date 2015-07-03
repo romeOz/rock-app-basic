@@ -20,5 +20,5 @@ mysql:
 
 vhosts:
   [
-    { name: 'rock-basic', webroot_dir: '/var/www/rock-basic/public'}
+    { name: 'rock-basic', webroot_dir: '/var/www/rock-basic/apps/frontend/public'}
   ]

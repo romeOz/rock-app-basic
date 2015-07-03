@@ -8,11 +8,11 @@ $config = require(dirname(dirname(__DIR__)) . '/common/configs/configs.php');
 \rock\base\Alias::setAlias('runtime', '@frontend/runtime');
 \rock\base\Alias::setAlias('ns', '@frontend.ns');
 
-
 $path = \rock\base\Alias::getAlias('@frontend') . '/configs/';
 
 $config['components'] = \rock\helpers\ArrayHelper::merge(
     $config['components'],
+    require(__DIR__ . '/classes.php'),
     require(__DIR__ . '/models.php'),
     require(__DIR__ . '/controllers.php')
 );

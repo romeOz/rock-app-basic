@@ -2,19 +2,21 @@
 /**
  * Common config
  *
+ * @root - root directory.
  * @rock - framework directory.
  * @app - base path of currently running application.
  * @runtime - runtime of currently directory.
- * @vendor - Composer vendor directory.
  * @scope - scope root directory of currently running web application.
+ * @views - views directory of currently running web application.
  * @web - base URL of currently running web application.
+ * @ns - namespace of currently running web application.
  */
 \rock\base\Alias::setAlias('root', dirname(dirname(dirname(__DIR__))));
 \rock\base\Alias::setAlias('rock', \rock\Rock::$dir);
 \rock\base\Alias::setAlias('vendor', '@root/vendor');
 \rock\base\Alias::setAlias('assets', '@root/public/assets');
 \rock\base\Alias::setAlias('web', '/assets');
-\rock\base\Alias::setAlias('webImg', '/assets/images');
+\rock\base\Alias::setAlias('web.img', '/assets/images');
 \rock\base\Alias::setAlias('app', '@root/apps');
 \rock\base\Alias::setAlias('common', '@app/common');
 \rock\base\Alias::setAlias('frontend', '@app/frontend');
@@ -33,6 +35,11 @@
 \rock\base\Alias::setAlias('img', '@assets/images');
 \rock\base\Alias::setAlias('images', '@img');
 
+$request = new \rock\request\Request();
+\rock\base\Alias::setAlias('link.home', $request->getHostInfo());
+\rock\base\Alias::setAlias('link.ajax', '@link.home/ajax');
+\rock\base\Alias::setAlias('email', 'support@' . $request->getHost());
+
 $config =\rock\helpers\ArrayHelper::merge(
     require(\rock\base\Alias::getAlias('@rock/classes.php')),
     require(__DIR__ . '/classes.php'),
@@ -40,7 +47,7 @@ $config =\rock\helpers\ArrayHelper::merge(
 );
 
 return [
-    'siteUrl'              => (new \rock\request\Request())->getHostInfo() .'/',
+    'siteUrl'              => \rock\base\Alias::getAlias('@link.home'),
     'emailSender'          => $config['mail']['From'],
     'components'   => $config,
 ];

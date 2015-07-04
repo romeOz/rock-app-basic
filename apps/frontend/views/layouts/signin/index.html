@@ -1,0 +1,51 @@
+[[$@frontend.views/sections/top]]
+<main class="container main form-container" role="main">
+[[activeForm
+        ?model=`+$root.model`
+        ?validate=`true`
+        ?config=`{
+            "action" : "@link.home/signin.html",
+            "options" : {
+                "class":"form-signin",
+                "novalidate" : "novalidate"
+            },
+            "fieldConfig" : {"template" : "<div class='inline-column'>{hint}\n{input}</div>\n{error}"}
+        }`
+        ?fields=`{
+            "0" : "<h2>Sign in</h2>",
+            "email" : {
+                "options" : {
+                    "inputOptions" : {
+                            "class" : "form-control form-input",
+                            "autofocus" : "autofocus",
+                            "placeholder" : "E-mail",
+                            "data" : {"rock-reset-field-icon" : ""}
+                    }
+                }
+            },
+            "password" : {
+                            "options" : {
+                                "inputOptions" : {
+                                    "class" : "form-control form-input",
+                                    "maxlength" : 20,
+                                    "value" : "",
+                                    "placeholder" : "[[%password:upperFirst]]",
+                                    "data" : {"rock-reset-field-icon" : ""}
+                                }
+                            },
+                            "0" : "passwordInput"
+            }
+        }`
+        ?submitButton=`[
+                "[[%signin]]",
+                {
+                    "class" : "btn btn-primary",
+                    "name" : "login-button"
+                }
+        ]`
+        ?wrapperTpl=`@INLINE
+            [[!+alerts:notEmpty&then=`@common.views\\elements\\alert-danger`]]
+            [[!+output]]`
+]]
+</main>
+[[$@frontend.views/sections/footer]]

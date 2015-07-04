@@ -1,13 +1,29 @@
 <?php
+use rock\route\Route;
+
 return [
     'route' => [
         'class' => \rock\route\Route::className(),
         'rules' =>
             [
                 [
-                    [rock\route\Route::GET],
+                    \rock\route\Route::GET,
+                    [
+                        Route::FILTER_GET => [
+                            'service' => 'logout'
+                        ]
+                    ],
+                    [\apps\frontend\controllers\LogoutController::className(), 'actionLogout']
+                ],
+                [
+                    rock\route\Route::GET,
                     '/' ,
                     [\apps\frontend\controllers\MainController::className(), 'actionIndex']
+                ],
+                [
+                    [rock\route\Route::GET, \rock\route\Route::POST],
+                    '/signin.html' ,
+                    [\apps\frontend\controllers\SigninController::className(), 'actionSignin']
                 ],
                 [
                     \rock\route\Route::GET,
@@ -19,7 +35,6 @@ return [
     'template' => [
         'cssFiles' => [
             rock\template\Template::POS_HEAD => [
-                '<link href="/assets/css/bootstrap.min.css" rel="stylesheet"/>',
                 '<link href="/assets/css/demo.css" rel="stylesheet"/>'
             ],
         ],

@@ -49,8 +49,6 @@ return [
     'activate'                => 'activate',
     'registration'              => 'registration',
     'authorization'             => 'login',
-    'recover'               => 'recover',
-    'recovery'               => 'recovery',
     'commentsNote' => 'In the message, use markup language <a href="http://ru.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a>.',
     'notJs'                     => 'Your browser does not support JavaScript. Try to fix this in the browser settings.',
     'logout' => 'logout',
@@ -61,5 +59,6 @@ return [
     'failAccess' => 'Denied access.',
     'logged'             => 'you have logged',
     'unlogged'             => 'you have not logged',
+    'forgotPassword'           => 'forgot password',
     'siteName' => 'Rock Framework',
 ];

@@ -1,4 +1,4 @@
-<p>Dear [[+fullname]],</p>
+<p>Dear [[+fullname || `[[+username]]`]],</p>
 <p>You send a request for password recovery.</p>
 <p>Now you can use the following login information:</p>
 
@@ -11,5 +11,5 @@ Password: <strong>[[+password]]</strong>
 <br />
 <p>Sincerely,<br />
     <em>Site administration</em></p>
-<p>Site: <a href="[[#cfg.siteUrl]]" title="[[%siteName]]">[[#cfg.siteUrl]]</a><br />
-Support: <a href="mailto:[[#cfg.emailSender]]">[[#cfg.emailSender]]</a></p>
+<p>Site: <a href="[[@@link.home:modifyUrl&scheme=`abs`]]" title="[[%siteName]]">[[@@link.home:modifyUrl&scheme=`abs`]]</a><br />
+Support: <a href="mailto:[[@@email]]">[[@@email]]</a></p>

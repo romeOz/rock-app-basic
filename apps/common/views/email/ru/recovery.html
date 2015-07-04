@@ -1,4 +1,4 @@
-<p>Уважаемый(ая) [[+fullname]],</p>
+<p>Уважаемый(ая) [[+fullname || `[[+username]]`]],</p>
 <p>Вы сделали запрос на восстановление пароля.</p>
 <p>Теперь Вы можете использовать следующие данные для входа:</p>
 
@@ -11,5 +11,5 @@ email (логин): <strong>[[+email]]</strong><br />
 <br />
 <p>С уважением,<br />
 <em>Администрация сайта</em></p>
-<p>Сайт: <a href="[[#cfg.siteUrl]]" title="[[%siteName]]">[[#cfg.siteUrl]]</a><br />
-Тех. поддержка: <a href="mailto:[[#cfg.emailSender]]">[[#cfg.emailSender]]</a></p>
+<p>Сайт: <a href="[[@@link.home:modifyUrl&scheme=`abs`]]" title="[[%siteName]]">[[@@link.home:modifyUrl&scheme=`abs`]]</a><br />
+Тех. поддержка: <a href="mailto:[[@@email]]">[[@@email]]</a></p>

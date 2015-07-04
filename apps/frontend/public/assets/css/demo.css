@@ -7188,10 +7188,14 @@ h6, .h6 {
 .main .form-container {
   padding-top: 100px;
 }
-.main .form-signin {
+.main .form-signin, .main .form-signup {
   margin: 0 auto;
   max-width: 330px;
   padding: 15px;
+}
+.main .form-group .block-center {
+  text-align: center;
+  margin-bottom: 15px;
 }
 .main .btn-primary {
   width: 100%;

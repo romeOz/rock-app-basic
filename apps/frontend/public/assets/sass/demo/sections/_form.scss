@@ -5,16 +5,25 @@
 @import "../mixins";
 
 /** Forms */
+$hintMargin: 4px;
 
 .form-container {
   padding-top: 100px;
 }
 
-.form-signin {
+.form-signin, .form-signup {
   margin: 0 auto;
   max-width: 330px;
   padding: 15px;
 }
+
+.form-group {
+  .block-center {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+
 .btn-primary {
   width: 100%;
 }

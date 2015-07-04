@@ -26,6 +26,11 @@ return [
                     [\apps\frontend\controllers\SigninController::className(), 'actionSignin']
                 ],
                 [
+                    [rock\route\Route::GET, \rock\route\Route::POST],
+                    '/signup.html' ,
+                    [\apps\frontend\controllers\SignupController::className(), 'actionSignup']
+                ],
+                [
                     \rock\route\Route::GET,
                     '*',
                     [\apps\frontend\controllers\MainController::className(), 'notPage']

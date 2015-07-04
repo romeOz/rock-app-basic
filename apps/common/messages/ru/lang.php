@@ -78,4 +78,5 @@ return [
     'failAccess' => 'Отказано в доступе.',
     'logged'             => 'вы авторизированы',
     'unlogged'             => 'вы не авторизированы',
+    'siteName' => 'Rock Framework',
 ];

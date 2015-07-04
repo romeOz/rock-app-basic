@@ -41,9 +41,9 @@ class UsersMigration extends CommonMigration
             $this->table,
             ['username', 'username_hash', 'password', 'token', 'email', 'email_hash', 'status', 'url'],
             [
-                ['Tom', $this->hash('Tom'), $security->generatePasswordHash('123456'), $security->generateRandomString() . '_' . time(), 'tom@gmail.com', $this->hash('tom@gmail.com'), 2, ''],
-                ['Jane', $this->hash('Jane'), $security->generatePasswordHash('123456'), $security->generateRandomString() . '_' . time(), 'jane@hotmail.com', $this->hash('jane@hotmail.com'), 2, ''],
-                ['Linda',$this->hash('Linda'), $security->generatePasswordHash('123456'), $security->generateRandomString() . '_' . time(), 'linda@gmail.com', $this->hash('linda@gmail.com'), 3, '/linda/'],
+                ['Tom', $this->hash('Tom'), $security->generatePasswordHash('demo'), $security->generateRandomString() . '_' . time(), 'tom@gmail.com', $this->hash('tom@gmail.com'), 2, ''],
+                ['Jane', $this->hash('Jane'), $security->generatePasswordHash('demo'), $security->generateRandomString() . '_' . time(), 'jane@hotmail.com', $this->hash('jane@hotmail.com'), 2, ''],
+                ['Linda',$this->hash('Linda'), $security->generatePasswordHash('demo'), $security->generateRandomString() . '_' . time(), 'linda@gmail.com', $this->hash('linda@gmail.com'), 3, '/linda/'],
             ]
         );
     }

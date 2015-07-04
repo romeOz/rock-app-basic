@@ -35,10 +35,9 @@
 \rock\base\Alias::setAlias('img', '@assets/images');
 \rock\base\Alias::setAlias('images', '@img');
 
-$request = new \rock\request\Request();
-\rock\base\Alias::setAlias('link.home', $request->getHostInfo());
+\rock\base\Alias::setAlias('link.home', 'localhost');
 \rock\base\Alias::setAlias('link.ajax', '@link.home/ajax');
-\rock\base\Alias::setAlias('email', 'support@' . $request->getHost());
+\rock\base\Alias::setAlias('email', 'support@localhost');
 
 $config =\rock\helpers\ArrayHelper::merge(
     require(\rock\base\Alias::getAlias('@rock/classes.php')),
@@ -47,7 +46,5 @@ $config =\rock\helpers\ArrayHelper::merge(
 );
 
 return [
-    'siteUrl'              => \rock\base\Alias::getAlias('@link.home'),
-    'emailSender'          => $config['mail']['From'],
     'components'   => $config,
 ];

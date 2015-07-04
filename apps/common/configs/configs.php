@@ -35,9 +35,10 @@
 \rock\base\Alias::setAlias('img', '@assets/images');
 \rock\base\Alias::setAlias('images', '@img');
 
-\rock\base\Alias::setAlias('link.home', 'localhost');
+$request = new \rock\request\Request();
+\rock\base\Alias::setAlias('link.home', $request->getHostInfo() ? : 'localhost');
 \rock\base\Alias::setAlias('link.ajax', '@link.home/ajax');
-\rock\base\Alias::setAlias('email', 'support@localhost');
+\rock\base\Alias::setAlias('email', 'support@' . ($request->getHost() ? : 'localhost'));
 
 $config =\rock\helpers\ArrayHelper::merge(
     require(\rock\base\Alias::getAlias('@rock/classes.php')),

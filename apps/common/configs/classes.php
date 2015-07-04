@@ -35,4 +35,7 @@ return [
         'class' => \rock\markdown\Markdown::className(),
         'handlerLinkByUsername' => [\apps\common\configs\MarkdownProperties::className(), 'handlerLinkByUsername']
     ],
+    'mail' => [
+        'From' => \rock\base\Alias::getAlias('@email'),
+    ],
 ];

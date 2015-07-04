@@ -16,14 +16,14 @@ class SignupFormMock extends BaseSignupForm
             return;
         }
         if (Users::existsByUsernameOrEmail($this->email, $this->username, null)) {
-            $this->addError('e_signup', i18n::t('existsUsernameOrEmail'));
+            $this->addError('alerts', i18n::t('existsUsernameOrEmail'));
         }
     }
 
     public function afterSignup()
     {
         if (!$users = Users::create($this->getAttributes(), $this->defaultStatus, $this->generateToken)) {
-            $this->addError('e_signup', i18n::t('failSignup'));
+            $this->addError('alerts', i18n::t('failSignup'));
             return;
         }
         $this->users = $users;

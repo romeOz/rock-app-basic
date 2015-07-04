@@ -81,7 +81,7 @@ class LoginFormTest extends DatabaseTestCase
                     },
                 ],
                 [
-                    'e_login' =>
+                    'alerts' =>
                         [
                             'CSRF-token must not be empty',
                         ],
@@ -96,7 +96,7 @@ class LoginFormTest extends DatabaseTestCase
                     },
                 ],
                 [
-                    'e_login' =>
+                    'alerts' =>
                         [
                             'Password or email is invalid.',
                         ],
@@ -111,7 +111,7 @@ class LoginFormTest extends DatabaseTestCase
                     },
                 ],
                 [
-                    'e_login' =>
+                    'alerts' =>
                         [
                             'Account is not activated',
                         ],

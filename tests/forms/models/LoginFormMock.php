@@ -17,7 +17,7 @@ class LoginFormMock extends BaseLoginForm
     {
         if (!isset($this->users)) {
             if (!$this->users = Users::findOneByEmail($this->email, null, false)) {
-                $this->addError('e_login', i18n::t('notExistsUser'));
+                $this->addError('alerts', i18n::t('notExistsUser'));
             }
         }
 

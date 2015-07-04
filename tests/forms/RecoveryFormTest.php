@@ -102,7 +102,7 @@ class RecoveryFormTest extends DatabaseTestCase
                     'captcha' => '12345'
                 ],
                 [
-                    'e_recovery' =>
+                    'alerts' =>
                         [
                             'CSRF-token must not be empty',
                         ],
@@ -129,7 +129,7 @@ class RecoveryFormTest extends DatabaseTestCase
         $model->load($_POST);
         $this->assertFalse($model->validate());
         $expected = [
-            'e_recovery' => ['Email is invalid.']
+            'alerts' => ['Email is invalid.']
         ];
         $this->assertSame($expected, $model->getErrors());
     }

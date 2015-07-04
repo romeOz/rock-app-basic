@@ -122,7 +122,7 @@ class BaseSignupForm extends Model
             return;
         }
         if (Users::existsByUsernameOrEmail($this->email, $this->username, null)) {
-            $this->addError('e_signup', i18n::t('existsUsernameOrEmail'));
+            $this->addError('alerts', i18n::t('existsUsernameOrEmail'));
         }
     }
 
@@ -130,7 +130,7 @@ class BaseSignupForm extends Model
     {
         $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
         if (!$v->validate($input)) {
-            $this->addError('e_signup', $v->getFirstError());
+            $this->addError('alerts', $v->getFirstError());
         }
     }
 
@@ -144,7 +144,7 @@ class BaseSignupForm extends Model
     public function afterSignup()
     {
         if (!$users = Users::create($this->getAttributes(), $this->defaultStatus, $this->generateToken)) {
-            $this->addError('e_signup', i18n::t('failSignup'));
+            $this->addError('alerts', i18n::t('failSignup'));
             return;
         }
         $this->users = $users;

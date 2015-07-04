@@ -138,7 +138,7 @@ class SignupFormTest extends DatabaseTestCase
                     'captcha' => '12345'
                 ],
                 array (
-                    'e_signup' =>
+                    'alerts' =>
                         array (
                             0 => 'CSRF-token must not be empty',
                         ),
@@ -164,7 +164,7 @@ class SignupFormTest extends DatabaseTestCase
         $_POST = [$model->formName() => $post];
         $model->load($_POST);
         $this->assertFalse($model->validate());
-        $expected = ['e_signup' =>['User with this name/e-mail already exists.',],];
+        $expected = ['alerts' =>['User with this name/e-mail already exists.',],];
         $this->assertEquals($expected, $model->getErrors());
     }
 
@@ -186,7 +186,7 @@ class SignupFormTest extends DatabaseTestCase
         $model->load($_POST);
         $this->assertFalse($model->validate());
 
-        $expected = ['e_signup' =>['User with this name/e-mail already exists.',],];
+        $expected = ['alerts' =>['User with this name/e-mail already exists.',],];
         $this->assertEquals($expected, $model->getErrors());
     }
 

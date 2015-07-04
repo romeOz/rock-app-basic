@@ -110,7 +110,7 @@ class BaseRecoveryForm extends Model
     {
         $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
         if (!$v->validate($input)) {
-            $this->addError('e_recovery', $v->getFirstError());
+            $this->addError('alerts', $v->getFirstError());
         }
     }
 
@@ -126,7 +126,7 @@ class BaseRecoveryForm extends Model
     {
         if (!isset($this->users)) {
             if (!$this->users = Users::findOneByEmail($this->email, Users::STATUS_ACTIVE, false)) {
-                $this->addError('e_recovery', i18n::t('invalidEmail'));
+                $this->addError('alerts', i18n::t('invalidEmail'));
             }
         }
 
@@ -148,7 +148,7 @@ class BaseRecoveryForm extends Model
         $password = $security->generateRandomString(7);
         $users->setPassword($password);
         if (!$users->save()) {
-            $this->addError('e_recovery', i18n::t('failRecovery'));
+            $this->addError('alerts', i18n::t('failRecovery'));
             return;
         };
         $event = new ModelEvent();

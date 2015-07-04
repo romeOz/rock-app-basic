@@ -102,7 +102,7 @@ class BaseLoginForm extends Model
             return;
         }
         if (!$user->validatePassword($password)) {
-            $this->addError('e_login', i18n::t('invalidPasswordOrEmail'));
+            $this->addError('alerts', i18n::t('invalidPasswordOrEmail'));
         }
     }
 
@@ -110,7 +110,7 @@ class BaseLoginForm extends Model
     {
         $v = Validate::required()->csrf()->placeholders(['name' => 'CSRF-token']);
         if (!$v->validate($input)) {
-            $this->addError('e_login', $v->getFirstError());
+            $this->addError('alerts', $v->getFirstError());
         }
     }
 
@@ -124,7 +124,7 @@ class BaseLoginForm extends Model
         }
 
         if ($user->status !== Users::STATUS_ACTIVE) {
-            $this->addError('e_login', i18n::t('notActivatedUser'));
+            $this->addError('alerts', i18n::t('notActivatedUser'));
         }
     }
 
@@ -140,7 +140,7 @@ class BaseLoginForm extends Model
     {
         if (!isset($this->users)) {
             if (!$this->users = Users::findOneByEmail($this->email, null, false)) {
-                $this->addError('e_login', i18n::t('notExistsUser'));
+                $this->addError('alerts', i18n::t('notExistsUser'));
             }
         }
 
@@ -159,7 +159,7 @@ class BaseLoginForm extends Model
         $users = $this->getUsers();
         $users->login_last = DateTime::set()->isoDatetime();
         if (!$users->save()) {
-            $this->addError('e_login', i18n::t('failLogin'));
+            $this->addError('alerts', i18n::t('failLogin'));
             return;
         }
 

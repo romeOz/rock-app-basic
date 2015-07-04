@@ -18,7 +18,7 @@ class RecoveryFormMock extends BaseRecoveryForm
     {
         if (!isset($this->users)) {
             if (!$this->users = Users::findOneByEmail($this->email, Users::STATUS_ACTIVE, false)) {
-                $this->addError('e_recovery', i18n::t('invalidEmail'));
+                $this->addError('alerts', i18n::t('invalidEmail'));
             }
         }
 

@@ -11,7 +11,7 @@ $hintMargin: 4px;
   padding-top: 100px;
 }
 
-.form-signin, .form-signup {
+.form-signin, .form-signup, .form-recovery {
   margin: 0 auto;
   max-width: 330px;
   padding: 15px;
@@ -19,13 +19,18 @@ $hintMargin: 4px;
 
 .form-group {
   .block-center {
-    text-align: center;
     margin-bottom: 15px;
   }
 }
 
+.form-control {
+  font-size: inherit;
+  height: auto;
+}
+
 .btn-primary {
   width: 100%;
+  font-size: 18px;
 }
 
 .form-error {

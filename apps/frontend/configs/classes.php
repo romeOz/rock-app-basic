@@ -32,6 +32,11 @@ return [
                 ],
                 [
                     \rock\route\Route::GET,
+                    '/activation.html' ,
+                    [\apps\frontend\controllers\ActivationController::className(), 'actionIndex']
+                ],
+                [
+                    \rock\route\Route::GET,
                     '*',
                     [\apps\frontend\controllers\MainController::className(), 'notPage']
                 ],

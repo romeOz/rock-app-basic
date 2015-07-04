@@ -1,0 +1,24 @@
+@import "compass/utilities";
+@import "compass/typography";
+@import "compass/css3";
+@import "../variables";
+@import "../mixins";
+
+/** Main column */
+
+.main {
+  padding-top: 100px;
+  font-size: 18px;
+
+  .title {
+    font-size: 60px;
+    font-weight: normal;
+  }
+
+  .description {
+    font-size: 20px;
+    color: #999;
+  }
+
+  @import "form";
+}

@@ -1,0 +1,44 @@
+// Compass configurable
+
+//$debug-browser-support: true;
+$browser-minimum-versions: (
+  "ie":         "8",
+  "safari":     "7",
+  "ios-safari": "7.0-7.1",
+  "opera":      "24",
+  "chrome":     "31",
+  "firefox":    "31",
+  "android":    "4"
+);
+$graceful-usage-threshold: 4.46163;
+$critical-usage-threshold: 4.46163;
+
+// Compass
+
+@import "compass/utilities";
+@import "compass/typography";
+@import "compass/css3";
+
+/** Bootstrap **/
+
+@import "bootstrap/variables";
+$icon-font-path: "../fonts/";
+@import "bootstrap/mixins";
+// Reset and dependencies
+//@import "bootstrap/normalize";
+//@import "bootstrap/print";
+@import "bootstrap";
+
+
+/** Application **/
+
+@import "demo/index";
+
+
+
+
+
+
+
+
+

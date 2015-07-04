@@ -1,0 +1,23 @@
+@import "../mixins";
+
+@mixin animate-items(){
+  .ng-enter, .ng-leave, .ng-move {
+    @include transition(all linear 1s);
+  }
+  .ng-enter {
+    max-height: 0;
+    @include opacity(0);
+  }
+  .ng-enter.ng-enter-active {
+    max-height: 250px;
+    @include opacity(1);
+  }
+  .ng-leave {
+    @include opacity(1);
+    max-height: 250px;
+  }
+  .ng-leave.ng-leave-active {
+    @include opacity(0);
+    max-height: 0;
+  }
+}

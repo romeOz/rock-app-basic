@@ -49,7 +49,7 @@ class BaseLoginForm extends Model
                 'email', 'length' => [4, 80, true], 'email'
             ],
             [
-                'password', 'length' => [6, 20, true], 'regex' => ['/^[a-z\d\-\_\.]+$/i']
+                'password', 'length' => [4, 20, true], 'regex' => ['/^[a-z\d\-\_\.]+$/i']
             ],
             [
                 'email', '!lowercase'

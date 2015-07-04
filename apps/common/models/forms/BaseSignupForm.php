@@ -64,7 +64,7 @@ class BaseSignupForm extends Model
                 'username', 'length' => [3, 80, true], 'regex' => ['/^[\w\s\-\*\@\%\#\!\?\.\)\(\+\=\~\:]+$/i']
             ],
             [
-                'password', 'length' => [6, 20, true], 'regex' => ['/^[a-z\d\-\_\.]+$/i']
+                'password', 'length' => [4, 20, true], 'regex' => ['/^[a-z\d\-\_\.]+$/i']
             ],
             [
                 'password_confirm', 'confirm' => [$this->password]

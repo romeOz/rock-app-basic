@@ -27,6 +27,7 @@ use rock\widgets\Captcha;
                 ],
             ],
             'fields' => [
+                '<h2>[[%signup:upperFirst]]</h2>',
                 'email' => [
                     'options' => [
                         'inputOptions' => [

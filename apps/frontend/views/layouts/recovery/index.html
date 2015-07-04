@@ -1,0 +1,57 @@
+[[$@frontend.views/sections/top]]
+<main class="container main form-container" role="main">
+[[activeForm
+    ?model=`+$root.model`
+    ?validate=`true`
+    ?config=`{
+        "action" : "@link.home/recovery.html",
+        "options" : {
+            "class":"form-recovery",
+            "novalidate" : "novalidate"
+        },
+        "fieldConfig" : {"template" : "<div class='inline-column'>{hint}\n{input}</div>{error}"}
+    }`
+    ?fields=`{
+        "0" : "<h2>[[%resetPassword:upperFirst]]</h2>",
+        "email" : {
+            "options" : {
+                "inputOptions" : {
+                    "class" : "form-control form-input",
+                    "maxlength" : 30,
+                    "autofocus" : "autofocus",
+                    "placeholder" : "[[%email:upperFirst]]"
+                },
+                "required" : true
+            }
+        },
+        "captcha" : {
+            "options" : {
+                "required" : true
+            },
+            "widget" : {
+                "0" : "rock\\widgets\\Captcha",
+                "1" :  {
+                    "template" : "<div class='block-center'>{image}</div>{input}",
+                    "options" : {
+                        "class" : "form-control form-input",
+                        "maxlength" : 7,
+                        "value" : "",
+                        "placeholder" : "[[%captcha:upperFirst]]"
+                    }
+                }
+            }
+        }
+    }`
+    ?submitButton=`[
+        "[[%resetPassword]]",
+        {
+            "class" : "btn btn-primary",
+            "name" : "recovery-button"
+        }
+    ]`
+    ?wrapperTpl=`@INLINE
+        [[!+alerts:notEmpty&then=`@common.views\\elements\\alert-danger`]]
+        [[!+output]]`
+]]
+</main>
+[[$@frontend.views/sections/footer]]

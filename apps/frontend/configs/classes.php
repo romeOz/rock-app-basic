@@ -31,6 +31,11 @@ return [
                     [\apps\frontend\controllers\SignupController::className(), 'actionSignup']
                 ],
                 [
+                    [rock\route\Route::GET, \rock\route\Route::POST],
+                    '/recovery.html' ,
+                    [\apps\frontend\controllers\RecoveryController::className(), 'activeRecovery']
+                ],
+                [
                     \rock\route\Route::GET,
                     '/activation.html' ,
                     [\apps\frontend\controllers\ActivationController::className(), 'actionIndex']

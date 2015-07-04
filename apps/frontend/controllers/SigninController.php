@@ -6,15 +6,12 @@ namespace apps\frontend\controllers;
 use apps\common\models\users\Users;
 use apps\frontend\models\SigninForm;
 use rock\components\ModelEvent;
-use rock\core\Controller;
 use rock\csrf\CSRF;
 use rock\events\Event;
 use rock\helpers\ArrayHelper;
-use rock\i18n\i18n;
-use rock\url\Url;
 use rock\user\User;
 
-class SigninController extends Controller
+class SigninController extends BaseAuthController
 {
     public function actionSignin(User $user, CSRF $CSRF)
     {
@@ -42,24 +39,5 @@ class SigninController extends Controller
         $data = $users->toArray();
         $user->addMulti(ArrayHelper::intersectByKeys($data, ['id', 'username', 'url']));
         $user->login();
-    }
-
-    protected function redirect()
-    {
-        if (!isset($this->redirectUrl)) {
-            $this->response->refresh()->send(true);
-            return;
-        }
-        $this->response->redirect($this->redirectUrl)->send(true);
-    }
-
-    protected function getMessageLogout(CSRF $CSRF, $key, $layout = '@common.views/elements/alert-info')
-    {
-        $args = [
-            $CSRF->csrfParam => $CSRF->get(),
-            'service' => 'logout'
-        ];
-        $content = i18n::t($key, ['url' => Url::set()->addArgs($args)->getRelativeUrl(true)]);
-        return $this->template->getChunk($layout, ['output' => $content]);
     }
 }

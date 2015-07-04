@@ -12,7 +12,7 @@
             "fieldConfig" : {"template" : "<div class='inline-column'>{hint}\n{input}</div>\n{error}"}
         }`
         ?fields=`{
-            "0" : "<h2>Sign in</h2>",
+            "0" : "<h2>[[%signin:upperFirst]]</h2>",
             "email" : {
                 "options" : {
                     "inputOptions" : {
@@ -45,7 +45,8 @@
         ]`
         ?wrapperTpl=`@INLINE
             [[!+alerts:notEmpty&then=`@common.views\\elements\\alert-danger`]]
-            [[!+output]]`
+            [[!+output]]
+            <div class="block-center"><a href="[[@@link.home]]/recovery.html" rel="nofollow">[[%forgotPassword:upperFirst]]?</a></div>`
 ]]
 </main>
 [[$@frontend.views/sections/footer]]

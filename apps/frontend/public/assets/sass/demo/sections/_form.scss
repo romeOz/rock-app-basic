@@ -18,6 +18,8 @@ $hintMargin: 4px;
 }
 
 .form-group {
+  position: relative;
+
   .block-center {
     margin-bottom: 15px;
   }
@@ -26,6 +28,15 @@ $hintMargin: 4px;
 .form-control {
   font-size: inherit;
   height: auto;
+}
+
+///  right-inner icon
+.right-inner {
+  position: absolute;
+  right: 0;
+  color: #C0C0C0;
+  cursor: pointer;
+  padding: 10px 12px;
 }
 
 .btn-primary {

@@ -7197,12 +7197,22 @@ h6, .h6 {
   max-width: 330px;
   padding: 15px;
 }
+.main .form-group {
+  position: relative;
+}
 .main .form-group .block-center {
   margin-bottom: 15px;
 }
 .main .form-control {
   font-size: inherit;
   height: auto;
+}
+.main .right-inner {
+  position: absolute;
+  right: 0;
+  color: #C0C0C0;
+  cursor: pointer;
+  padding: 10px 12px;
 }
 .main .btn-primary {
   width: 100%;

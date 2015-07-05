@@ -1,0 +1,15 @@
+@import "../mixins";
+
+.global-notifications {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+
+  .alert {
+    width: 270px;
+    text-align: center;
+  }
+
+  /** animate **/
+  @include animate-items;
+}

@@ -7251,4 +7251,40 @@ h6, .h6 {
   margin-bottom: 0;
 }
 
+.global-notifications {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  /** animate **/
+}
+.global-notifications .alert {
+  width: 270px;
+  text-align: center;
+}
+.global-notifications .ng-enter, .global-notifications .ng-leave, .global-notifications .ng-move {
+  -webkit-transition: all linear 1s;
+  -o-transition: all linear 1s;
+  transition: all linear 1s;
+}
+.global-notifications .ng-enter {
+  max-height: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.global-notifications .ng-enter.ng-enter-active {
+  max-height: 250px;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.global-notifications .ng-leave {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  max-height: 250px;
+}
+.global-notifications .ng-leave.ng-leave-active {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  max-height: 0;
+}
+
 /*# sourceMappingURL=demo.css.map */

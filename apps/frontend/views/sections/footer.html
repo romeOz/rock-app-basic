@@ -6,3 +6,9 @@
         </p>
     </div>
 </footer>
+<ul class="global-notifications ng-hide"
+    data-ng-show="notifications"
+    data-ng-controller="NotificationController"
+    [[+$root.notifications && `data-ng-init='merge([[+$root.notifications:toJson]])'`]]>
+    <li class="alert" data-alert data-ng-repeat="notification in notifications" data-type="{{notification.type || 'danger'}}" data-close="closeAlert($index)" data-dismiss-on-timeout="4000"><span ng-bind-html="notification.msg|unsafe"></span></li>
+</ul>

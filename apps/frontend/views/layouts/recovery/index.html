@@ -1,5 +1,5 @@
 [[$@frontend.views/sections/top]]
-<main class="container main form-container" role="main">
+<main class="container main form-container" role="main"  data-ng-controller="RockFormController">
 [[activeForm
     ?model=`+$root.model`
     ?validate=`true`
@@ -9,7 +9,7 @@
             "class":"form-recovery",
             "novalidate" : "novalidate"
         },
-        "fieldConfig" : {"template" : "<div class='inline-column'>{hint}\n{input}</div>{error}"}
+        "fieldConfig" : {"template" : "{hint}\n{input}{error}"}
     }`
     ?fields=`{
         "0" : "<h2>[[%resetPassword:upperFirst]]</h2>",
@@ -19,7 +19,8 @@
                     "class" : "form-control form-input",
                     "maxlength" : 30,
                     "autofocus" : "autofocus",
-                    "placeholder" : "[[%email:upperFirst]]"
+                    "placeholder" : "[[%email:upperFirst]]",
+                    "data" : {"rock-reset-field-icon" : ""}
                 },
                 "required" : true
             }

@@ -1,5 +1,5 @@
 [[$@frontend.views/sections/top]]
-<main class="container main form-container" role="main">
+<main class="container main form-container" role="main" data-ng-controller="RockFormController">
 [[activeForm
         ?model=`+$root.model`
         ?validate=`true`
@@ -9,7 +9,7 @@
                 "class":"form-signin",
                 "novalidate" : "novalidate"
             },
-            "fieldConfig" : {"template" : "<div class='inline-column'>{hint}\n{input}</div>\n{error}"}
+            "fieldConfig" : {"template" : "{hint}\n{input}\n{error}"}
         }`
         ?fields=`{
             "0" : "<h2>[[%signin:upperFirst]]</h2>",

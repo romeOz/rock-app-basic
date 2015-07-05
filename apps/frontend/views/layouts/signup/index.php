@@ -8,7 +8,7 @@ use rock\widgets\Captcha;
 
 ?>
 <?=$this->getChunk('@frontend.views/sections/top')?>
-<main class="container main form-container" role="main"><?php
+<main class="container main form-container" role="main" data-ng-controller="RockFormController"><?php
 
     echo $this->getSnippet(
         'activeForm',
@@ -23,7 +23,7 @@ use rock\widgets\Captcha;
                     'novalidate' => 'novalidate',
                 ],
                 'fieldConfig' => [
-                    'template' => "<div class='inline-column'>{hint}\n{input}</div>\n{error}",
+                    'template' => "{hint}\n{input}\n{error}",
                 ],
             ],
             'fields' => [
@@ -35,6 +35,7 @@ use rock\widgets\Captcha;
                             'maxlength' => 30,
                             'autofocus' => '',
                             'placeholder'=> StringHelper::upperFirst(\rock\i18n\i18n::t('email')),
+                            'data'  =>  ['rock-reset-field-icon' => '']
                         ],
                         'required' => true
                     ],
@@ -44,7 +45,8 @@ use rock\widgets\Captcha;
                         'inputOptions' => [
                             'class' => 'form-control form-input',
                             'maxlength' => 80,
-                            'placeholder'=> StringHelper::upperFirst(\rock\i18n\i18n::t('username'))
+                            'placeholder'=> StringHelper::upperFirst(\rock\i18n\i18n::t('username')),
+                            'data'  =>  ['rock-reset-field-icon' => '']
                         ]
                     ],
                 ],
@@ -56,6 +58,7 @@ use rock\widgets\Captcha;
                             'maxlength' => 20,
                             'value' => '',
                             'placeholder'=> StringHelper::upperFirst(\rock\i18n\i18n::t('password')),
+                            'data'  =>  ['rock-reset-field-icon' => '']
                         ]
                     ],
                     'passwordInput',
@@ -67,7 +70,7 @@ use rock\widgets\Captcha;
                             'maxlength' => 20,
                             'value' => '',
                             'placeholder' => StringHelper::upperFirst(\rock\i18n\i18n::t('confirmPassword')),
-                            'data' => ['rock-match' => 'password']
+                            'data' => ['rock-match' => 'password', 'rock-reset-field-icon' => '']
                         ]
                     ],
                     'passwordInput',
@@ -109,4 +112,7 @@ use rock\widgets\Captcha;
         ]
     );
 ?></main>
+<script type="text/ng-template" id="form/strong-password">
+    <progressbar value="value" type="{{class}}"></progressbar>
+</script>
 <?=$this->getChunk('@frontend.views/sections/footer')?>

@@ -47,13 +47,11 @@
                     $timeout(function() {
                         ctrl.$focused = false;
                     }, 0);
-                    //scope.$apply(function() {ctrl.$focused = false;});
                 }).bind('blur', function(evt) {
                     element.removeClass(FOCUS_CLASS);
                     $timeout(function() {
                         ctrl.$focused = true;
                     }, 0);
-                    //scope.$apply(function() {ctrl.$focused = true;});
                 });
             }
         }
@@ -277,9 +275,6 @@
                     $ngModel.$setViewValue(undefined);
                     $ngModel.$setPristine(true);
                     $ngModel.$render();
-                    //$timeout(function() {
-                    //    el[0].focus();
-                    //}, 0, false);
                 };
                 $element.bind('input', function() {
                     $scope.enabled = !$ngModel.$isEmpty($element.val());

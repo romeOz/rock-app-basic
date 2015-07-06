@@ -71,7 +71,7 @@ class SignupFormTest extends DatabaseTestCase
                         ],
                     'password' =>
                         [
-                            'password must have a length between 6 and 20',
+                            'password must have a length between 4 and 20',
                         ],
                     'captcha' =>
                         [
@@ -118,7 +118,7 @@ class SignupFormTest extends DatabaseTestCase
                         ],
                     'password' =>
                         [
-                            0 => 'password must have a length between 6 and 20',
+                            0 => 'password must have a length between 4 and 20',
                         ],
                     'password_confirm' =>
                         [

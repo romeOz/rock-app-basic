@@ -68,7 +68,7 @@ class LoginFormTest extends DatabaseTestCase
                         ],
                     'password' =>
                         [
-                            'password must have a length between 6 and 20',
+                            'password must have a length between 4 and 20',
                         ],
                 ]
             ],
@@ -113,7 +113,7 @@ class LoginFormTest extends DatabaseTestCase
                 [
                     'alerts' =>
                         [
-                            'Account is not activated',
+                            'Password or email is invalid.',
                         ],
                 ]
             ],
@@ -126,7 +126,7 @@ class LoginFormTest extends DatabaseTestCase
         $csrf = Container::load(CSRF::className());
         $post = [
             'email' => 'Linda@gmail.com',
-            'password' => '123456',
+            'password' => 'demo',
         ];
         $model = new LoginFormMock();
         $post[$csrf->csrfParam] = $csrf->get();

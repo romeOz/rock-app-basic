@@ -42,3 +42,13 @@
     - ::1
     - localhost
   notify: restart mysql
+
+- name: "Create 'tarvis' + Assignment permission to the DB"
+  mysql_user: name=travis password='' priv={{ mysql.privileges|join('/') }} host={{ item }} state=present
+  with_items:
+    - "%"
+    - "{{ansible_eth1.ipv4.address}}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  notify: restart mysql

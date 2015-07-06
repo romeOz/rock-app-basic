@@ -39,7 +39,7 @@ if (!empty($components['classes'])) {
 Rock::$components = $config['components'];
 unset($config['components']);
 Rock::$config = $config;
-\rock\di\Container::addMulti(Rock::$components);
+\rock\di\Container::registerMulti(Rock::$components);
 
 \rock\exception\ErrorHandler::$logged = false;
 

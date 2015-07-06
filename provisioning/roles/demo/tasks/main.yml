@@ -1,5 +1,10 @@
-- name: Installing dependencies
-  shell: composer install --prefer-dist chdir={{ root_dir }}
+- name: Installing composer dependencies
+  composer: command=install working_dir={{ root_dir }} prefer_dist=yes no_dev=yes
+  tags: demo
+
+- name: Installing bower dependencies
+  sudo: false
+  shell: bower update -F chdir={{ root_dir }}
   tags: demo
 
 - name: Chown project
@@ -8,4 +13,4 @@
 
 - name: Create default tables
   shell: php {{ root_dir }}/apps/common/migrations/bootstrap.php
-  tags: demo
+  tags: demoConta

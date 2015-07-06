@@ -32,7 +32,7 @@ return [
     ],
 
     'markdown' =>[
-        'class' => \rock\markdown\Markdown::className(),
+        'class' => 'rock\\markdown\\Markdown',
         'handlerLinkByUsername' => [\apps\common\configs\MarkdownProperties::className(), 'handlerLinkByUsername']
     ],
     'mail' => [

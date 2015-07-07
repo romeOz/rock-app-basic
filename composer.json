@@ -1,7 +1,7 @@
 {
     "name": "romeoz/rock-app-basic",
     "description": "Rock Basic Application",
-    "keywords": ["rock", "framerock", "framework", "example"],
+    "keywords": ["rock", "framerock", "framework", "demo"],
     "type": "library",
     "license": "MIT",
     "support": {

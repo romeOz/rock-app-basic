@@ -1,13 +1,13 @@
 {
     "name": "romeoz/rock-app-basic",
-    "description": "Rock Basic Application Template",
-    "keywords": ["rock", "framerock", "framework", "basic", "application template"],
+    "description": "Rock Basic Application",
+    "keywords": ["rock", "framerock", "framework", "example"],
     "type": "library",
     "license": "MIT",
     "support": {
         "email": "serggalka@gmail.com",
-        "issues": "https://github.com/romeOz/romeoz/rock-app-basic/issues",
-        "source": "https://github.com/romeOz/romeoz/rock-app-basic"
+        "issues": "https://github.com/romeoz/rock-app-basic/issues",
+        "source": "https://github.com/romeoz/rock-app-basic"
     },
     "authors": [
         {

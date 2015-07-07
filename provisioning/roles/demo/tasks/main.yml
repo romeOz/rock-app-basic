@@ -3,8 +3,7 @@
   tags: demo
 
 - name: Installing bower dependencies
-  sudo: false
-  shell: bower update -F chdir={{ root_dir }}
+  shell: bower install --allow-root -F chdir={{ root_dir }}
   tags: demo
 
 - name: Chown project
@@ -13,4 +12,4 @@
 
 - name: Create default tables
   shell: php {{ root_dir }}/apps/common/migrations/bootstrap.php
-  tags: demoConta
+  tags: demo

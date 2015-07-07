@@ -5,12 +5,13 @@ RUN	\
 	# Update packages list, upgrade installed packages
 	apt-get -y update && \
 	apt-get -y upgrade && \
-	apt-get install -y software-properties-common && \
+	apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev libfreetype6-dev python-pip python-apt python-dev && \
     # Add repositories
-    apt-add-repository -y ppa:ansible/ansible  && \
-    apt-get -y update && \
+    #apt-add-repository -y ppa:ansible/ansible  && \
+    #apt-get -y update && \
 	# Install ansible
-	apt-get install -y ansible
+	#apt-get install -y ansible
+	pip install https://pypi.python.org/packages/source/a/ansible/ansible-1.9.1.tar.gz
 
 # Add playbooks to the Docker image
 ADD ./ /var/www/rock-basic/

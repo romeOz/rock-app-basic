@@ -15,7 +15,7 @@
   notify: restart mysql
 
 - name: "Create root-user + Assignment permission to the DB"
-  mysql_user: name={{ mysql.root_user }} password={{ mysql.root_user }} host={{ item }} state=present
+  mysql_user: name={{ mysql.root_user }} password={{ mysql.root_pass }} host={{ item }} state=present
   with_items:
     - "%"
     - "{{ansible_eth1.ipv4.address}}"

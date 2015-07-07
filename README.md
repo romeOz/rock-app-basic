@@ -1,4 +1,4 @@
-Basic Application Template for [Rock Framework](https://github.com/romeOz/rock)
+Basic Application (example) for [Rock Framework](https://github.com/romeOz/rock)
 =================
 
 [![Build Status](https://travis-ci.org/romeOz/rock-app-basic.svg?branch=master)](https://travis-ci.org/romeOz/rock-app-basic)
@@ -97,4 +97,4 @@ or [**optimal version**](https://github.com/romeOz/rock-app-basic/blob/master/pr
 License
 -------------------
 
-Basic Application Template for [Rock Framework](https://github.com/romeOz/rock) is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Basic Application for [Rock Framework](https://github.com/romeOz/rock) is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

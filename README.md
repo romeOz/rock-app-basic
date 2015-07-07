@@ -1,4 +1,4 @@
-Basic Application (example) for [Rock Framework](https://github.com/romeOz/rock)
+Basic Application (demo) for [Rock Framework](https://github.com/romeOz/rock)
 =================
 
 [![Build Status](https://travis-ci.org/romeOz/rock-app-basic.svg?branch=master)](https://travis-ci.org/romeOz/rock-app-basic)

@@ -68,7 +68,7 @@ return [
 //                '<script src="/assets/js/vendor/angular-bootstrap/ui-bootstrap.min.js"></script>',
 //                '<script src="/assets/js/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>',
 //                '<script src="/assets/js/vendor/angular-translate/angular-translate.min.js"></script>',
-//                '<script src="/assets/js/vendor/angular-rock/angular-rock.min.js"></script>',
+//                '<script src="/assets/js/vendor/angular-rock/angular-rock.js"></script>',
 
                 // app
                 '<script src="/assets/js/app.min.js"></script>',

@@ -13,7 +13,7 @@ class LogoutController extends Controller
 {
     public function actionLogout(User $user, CSRF $CSRF)
     {
-        $valid = $CSRF->valid(Request::get($CSRF->csrfParam));
+        $valid = $CSRF->check(Request::get($CSRF->csrfParam));
         if ($valid) {
             $user->logout(true);
         }

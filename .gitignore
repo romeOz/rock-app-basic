@@ -7,6 +7,8 @@ node_modules/
 composer.lock
 tmp/
 runtime/
+gulpfile.js
+package.json
 
 ############
 ## Sass & Compass

@@ -48,7 +48,7 @@ return [
             ],
     ],
     'template' => [
-        'head' => '<!DOCTYPE html><html lang="'.\rock\Rock::$app->language .'" data-ng-app="app">',
+        'head' => [\apps\frontend\configs\TemplateProperties::className(), 'head'],
         'cssFiles' => [
             rock\template\Template::POS_HEAD => [
                 '<link href="/assets/css/demo.min.css" rel="stylesheet"/>'

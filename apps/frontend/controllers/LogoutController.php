@@ -18,6 +18,6 @@ class LogoutController extends Controller
             $user->logout(true);
         }
 
-        $this->response->redirect(Url::set()->removeAllArgs()->getAbsoluteUrl(true))->send(true);
+        $this->redirect(Url::set()->removeAllArgs()->getAbsolute())->send(true);
     }
 }

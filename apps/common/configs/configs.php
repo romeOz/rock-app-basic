@@ -23,18 +23,24 @@
 \rock\base\Alias::setAlias('backend', '@app/backend');
 \rock\base\Alias::setAlias('admin', '@backend');
 
+// namespaces
 \rock\base\Alias::setAlias('common.ns', 'apps\\common');
 \rock\base\Alias::setAlias('frontend.ns', 'apps\\frontend');
 \rock\base\Alias::setAlias('backend.ns', 'apps\\backend');
 \rock\base\Alias::setAlias('ns', '@common.ns');
 
+// runtime
 \rock\base\Alias::setAlias('common.runtime', '@common/runtime');
+
+// views
 \rock\base\Alias::setAlias('common.views', '@common/views');
 \rock\base\Alias::setAlias('frontend.views', '@frontend/views');
 
+// media
 \rock\base\Alias::setAlias('img', '@assets/images');
 \rock\base\Alias::setAlias('images', '@img');
 
+// links
 $request = new \rock\request\Request();
 \rock\base\Alias::setAlias('link.home', $request->getHostInfo() ? : 'localhost');
 \rock\base\Alias::setAlias('link.ajax', '@link.home/ajax');

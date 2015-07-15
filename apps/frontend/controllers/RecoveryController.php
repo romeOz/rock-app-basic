@@ -18,7 +18,7 @@ use rock\user\User;
 class RecoveryController extends BaseAuthController
 {
     public $emailBodyTpl = '@common.views/email/{lang}/recovery';
-    protected $keySessionFlash  = 'successRecovery';
+    protected $keySessionFlash = 'successRecovery';
 
     public function activeRecovery(User $user, Session $session, CSRF $CSRF, Mail $mail)
     {
@@ -39,10 +39,10 @@ class RecoveryController extends BaseAuthController
 
         $model = new RecoveryForm();
         // redirect
-        Event::on($model, RecoveryForm::EVENT_AFTER_RECOVERY, function(ModelEvent $event) use($session, $mail, $model){
+        Event::on($model, RecoveryForm::EVENT_AFTER_RECOVERY, function (ModelEvent $event) use ($session, $mail, $model) {
             $this->sendMail($mail, $event->result, $model);
             $session->setFlash('successRecovery', ['email' => $event->result->email]);
-            $this->redirect();
+            $this->response->refresh()->send(true);
         });
         $model->load($_POST);
         $placeholders['model'] = $model;

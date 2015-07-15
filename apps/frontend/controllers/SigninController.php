@@ -24,9 +24,9 @@ class SigninController extends BaseAuthController
 
         $model = new SigninForm();
         // redirect
-        Event::on($model, SigninForm::EVENT_AFTER_LOGIN, function(ModelEvent $event) use($user){
+        Event::on($model, SigninForm::EVENT_AFTER_LOGIN, function (ModelEvent $event) use ($user) {
             $this->login($user, $event->result);
-            $this->redirect();
+            $this->response->refresh()->send(true);
         });
         $model->load($_POST);
         $placeholders['model'] = $model;

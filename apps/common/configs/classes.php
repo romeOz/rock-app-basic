@@ -10,7 +10,9 @@ return [
         'aliasSeparator' => '__',
         'enableSchemaCache' => true,
     ],
-
+    'template' => [
+        'chroots' => ['@common/views', '@frontend/views']
+    ],
     'i18n' => [
         'class' => \rock\i18n\i18n::className(),
         'pathsDicts' => [

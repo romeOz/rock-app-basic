@@ -17,7 +17,7 @@
             [[!#user.isLogged
                 is `true`
                 ? `<li><a href="#">[[!#user.username]]</a></li>
-                   <li><a href="[[url?addCSRF=`true`?args=`{"service"   : "logout"}`]]" rel="nofollow">[[%logout:upperFirst]]</a></li>`
+                   <li><a href="[[url?addCSRF=`true`?modify=`{"service"   : "logout"}`]]" rel="nofollow">[[%logout:upperFirst]]</a></li>`
                 : `<li [[url is `/signin.html` ? `class="active"`]]><a href="/signin.html">[[%signin:upperFirst]]</a></li>
                    <li [[url is `/signup.html` ? `class="active"`]]><a href="/signup.html">[[%signup:upperFirst]]</a></li>`
             ]]

@@ -9770,6 +9770,11 @@ h6,
     margin-bottom: 0;
 }
 
+.alert
+{
+    list-style-type: none;
+}
+
 .global-notifications
 {
     position: fixed;

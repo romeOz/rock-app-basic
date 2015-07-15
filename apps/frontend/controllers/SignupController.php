@@ -18,9 +18,9 @@ use rock\user\User;
 
 class SignupController extends BaseAuthController
 {
-    protected $activateUrl      = '@link.home/activation.html';
-    protected $keySessionFlash  = 'successSignup';
-    protected $emailBodyTpl     = '@common.views/email/{lang}/activate';
+    protected $activateUrl = '@link.home/activation.html';
+    protected $keySessionFlash = 'successSignup';
+    protected $emailBodyTpl = '@common.views/email/{lang}/activate';
 
     public function actionSignup(User $user, CSRF $CSRF, Session $session, Mail $mail)
     {
@@ -42,10 +42,10 @@ class SignupController extends BaseAuthController
         $model = new SignupForm();
 
         // redirect
-        Event::on($model, SignupForm::EVENT_AFTER_SIGNUP, function(ModelEvent $event) use($session, $mail, $model){
+        Event::on($model, SignupForm::EVENT_AFTER_SIGNUP, function (ModelEvent $event) use ($session, $mail, $model) {
             $this->sendMail($mail, $event->result, $model);
             $session->setFlash('successSignup', ['email' => $event->result->email]);
-            $this->redirect();
+            $this->response->refresh()->send(true);
         });
         $model->load($_POST);
         $placeholders['model'] = $model;
@@ -81,7 +81,7 @@ class SignupController extends BaseAuthController
         if ($model->generateToken) {
             $placeholders['url'] = Url::set($this->activateUrl)
                 ->addArgs(['token' => $placeholders['token']])
-                ->getAbsoluteUrl();
+                ->getAbsolute();
         }
 
         return $this->template->getChunk($this->emailBodyTpl, $placeholders);
